@@ -2,8 +2,15 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const chapters = (await getCollection("chapters")).sort(
+const allChapters = (await getCollection("chapters")).sort(
   (a, b) => a.data.chapter - b.data.chapter
+);
+
+// Separate tutorials, case studies, and core chapters
+const tutorials = allChapters.filter((c) => c.data.topics.includes("tutorial"));
+const caseStudies = allChapters.filter((c) => c.data.title.startsWith("Case Study:"));
+const coreChapters = allChapters.filter(
+  (c) => !c.data.topics.includes("tutorial") && !c.data.title.startsWith("Case Study:")
 );
 
 const levels = [
@@ -24,17 +31,30 @@ const levels = [
       From client-server basics to distributed systems at scale.
       Every concept comes with real, working code in TypeScript and Go.
     </p>
+    <p class="topic-desc-detail">
+      Learn how to design systems that handle millions of users. Start with fundamentals like
+      HTTP servers, REST APIs, databases, and caching. Progress to scaling patterns — load balancing,
+      message queues, rate limiting, and database replication. Then tackle advanced topics:
+      distributed consensus, event sourcing, microservices, and observability. Build real systems
+      through step-by-step tutorials and production-grade case studies — URL shorteners, payment
+      systems, news feeds, chat systems, video transcoding, live streaming, and more.
+    </p>
     <div class="topic-stats">
-      <span class="stat">{chapters.length} chapters</span>
+      <span class="stat">{allChapters.length} chapters</span>
       <span class="stat-sep"></span>
-      <span class="stat">~5h reading</span>
+      <span class="stat">~13h reading</span>
       <span class="stat-sep"></span>
       <span class="stat">TypeScript + Go</span>
+      <span class="stat-sep"></span>
+      <span class="stat">{caseStudies.length} case studies</span>
+      <span class="stat-sep"></span>
+      <span class="stat">{tutorials.length} tutorials</span>
     </div>
   </header>
 
+  <!-- Core Chapters by Level -->
   {levels.map((level) => {
-    const items = chapters.filter((c) => c.data.level === level.key);
+    const items = coreChapters.filter((c) => c.data.level === level.key);
     if (items.length === 0) return null;
     return (
       <section class="level-section">
@@ -61,6 +81,68 @@ const levels = [
       </section>
     );
   })}
+
+  <!-- Tutorials -->
+  {tutorials.length > 0 && (
+    <section class="level-section special-section">
+      <div class="level-label">
+        <span class="level-dot" style="background: var(--color-accent);" />
+        <span class="level-name">Step-by-Step Tutorials</span>
+        <span class="level-count">{tutorials.length}</span>
+      </div>
+      <p class="section-desc">
+        Build complete systems from scratch with guided, incremental steps. Each tutorial
+        walks you through the why behind every decision.
+      </p>
+      <div class="chapter-list">
+        {tutorials.map((ch) => (
+          <a href={`/chapters/${ch.id}/`} class="chapter-item">
+            <span class="ch-num" style="color: var(--color-accent);">
+              {String(ch.data.chapter).padStart(2, "0")}
+            </span>
+            <div class="ch-info">
+              <span class="ch-name">{ch.data.title}</span>
+              <span class="ch-desc">{ch.data.subtitle}</span>
+            </div>
+            <span class="ch-badge tutorial-badge">Tutorial</span>
+            <span class="ch-time">{ch.data.readingTime}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="ch-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Case Studies -->
+  {caseStudies.length > 0 && (
+    <section class="level-section special-section">
+      <div class="level-label">
+        <span class="level-dot" style="background: #f59e0b;" />
+        <span class="level-name">Production Case Studies</span>
+        <span class="level-count">{caseStudies.length}</span>
+      </div>
+      <p class="section-desc">
+        Deep dives into real-world systems used by companies like Stripe, YouTube, Twitch, and Zoom.
+        Full production-grade implementations with architecture decisions explained.
+      </p>
+      <div class="chapter-list">
+        {caseStudies.map((ch) => (
+          <a href={`/chapters/${ch.id}/`} class="chapter-item">
+            <span class="ch-num" style="color: #f59e0b;">
+              {String(ch.data.chapter).padStart(2, "0")}
+            </span>
+            <div class="ch-info">
+              <span class="ch-name">{ch.data.title}</span>
+              <span class="ch-desc">{ch.data.subtitle}</span>
+            </div>
+            <span class="ch-badge case-study-badge">Case Study</span>
+            <span class="ch-time">{ch.data.readingTime}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="ch-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
@@ -98,7 +180,14 @@ const levels = [
     font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.65;
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .topic-desc-detail {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
   }
 
   .topic-stats {
@@ -238,10 +327,47 @@ const levels = [
     opacity: 0;
   }
 
+  /* Special sections (tutorials, case studies) */
+  .special-section {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .section-desc {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0 0 12px;
+    padding: 0;
+  }
+
+  .ch-badge {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .tutorial-badge {
+    color: var(--color-accent);
+    background: var(--color-accent-dim, rgba(129, 140, 248, 0.1));
+  }
+
+  .case-study-badge {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+  }
+
   @media (max-width: 640px) {
     .topic-title { font-size: 1.5rem; }
     .ch-desc { display: none; }
     .ch-arrow { opacity: 0.4; }
     .ch-time { opacity: 0.6; }
+    .ch-badge { display: none; }
   }
 </style>
