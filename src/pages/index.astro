@@ -1,0 +1,359 @@
+---
+import "../styles/global.css";
+import { getCollection } from "astro:content";
+
+const chapters = (await getCollection("chapters")).sort(
+  (a, b) => a.data.chapter - b.data.chapter
+);
+
+// Group by topic (for now just system design, but extensible)
+const topics = [
+  {
+    slug: "system-design",
+    title: "System Design",
+    desc: "From client-server basics to distributed systems at scale. Real code in TypeScript and Go.",
+    chapters: chapters.length,
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`,
+    href: "/topics/system-design/",
+  },
+];
+
+const upcoming = [
+  {
+    title: "Data Structures & Algorithms",
+    desc: "Patterns that show up in real codebases, not leetcode puzzles.",
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+  },
+  {
+    title: "Networking Fundamentals",
+    desc: "DNS, TCP/IP, TLS, HTTP/2, WebSockets — how the internet actually works.",
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+  },
+  {
+    title: "Database Internals",
+    desc: "B-trees, WAL, MVCC, query planning — what happens under the hood.",
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  },
+  {
+    title: "DevOps & Infrastructure",
+    desc: "Docker, Kubernetes, CI/CD, IaC — shipping code to production.",
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+  },
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unfold — Complex topics, explained simply</title>
+    <meta name="description" content="Unfold breaks down complex engineering topics into clear explanations with real, working code. No jargon. No hand-waving." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23fafafa'/><path d='M8 10h16M8 16h12M8 22h8' stroke='%2309090b' stroke-width='2.5' stroke-linecap='round'/></svg>"
+    />
+  </head>
+  <body>
+
+    <!-- Nav -->
+    <nav class="landing-nav">
+      <a href="/" class="nav-logo">Unfold</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <h1 class="hero-title">
+          Complex topics,<br/>explained simply.
+        </h1>
+        <p class="hero-desc">
+          Unfold takes hard engineering concepts and breaks them into clear,
+          step-by-step explanations with real code you can run.
+          Pick a topic and start learning.
+        </p>
+      </div>
+    </section>
+
+    <!-- Available Topics -->
+    <section class="topics">
+      <div class="topics-inner">
+        <div class="section-header">
+          <span class="section-label">Available</span>
+        </div>
+
+        {topics.map((topic) => (
+          <a href={topic.href} class="topic-card">
+            <div class="topic-icon" set:html={topic.icon} />
+            <div class="topic-info">
+              <span class="topic-title">{topic.title}</span>
+              <span class="topic-desc">{topic.desc}</span>
+            </div>
+            <div class="topic-meta">
+              <span class="topic-count">{topic.chapters} chapters</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="topic-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        ))}
+
+        <!-- Coming Soon -->
+        <div class="section-header coming-soon-header">
+          <span class="section-label">Coming soon</span>
+        </div>
+
+        {upcoming.map((topic) => (
+          <div class="topic-card topic-card-disabled">
+            <div class="topic-icon" set:html={topic.icon} />
+            <div class="topic-info">
+              <span class="topic-title">{topic.title}</span>
+              <span class="topic-desc">{topic.desc}</span>
+            </div>
+            <div class="topic-meta">
+              <span class="topic-soon-badge">Soon</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <span>Unfold</span>
+      <span class="footer-sep"></span>
+      <span>Complex topics, explained simply.</span>
+    </footer>
+
+  </body>
+</html>
+
+<style>
+  body {
+    font-family: "Cabin Condensed", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: #09090b;
+    color: #fafafa;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  ::selection { background: #818cf8; color: #fff; }
+
+  /* Nav */
+  .landing-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .nav-logo {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fafafa;
+    text-decoration: none;
+    letter-spacing: -0.04em;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 72px 24px 56px;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 36px; }
+  }
+
+  .hero-inner {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    color: #fafafa;
+    margin: 0 0 20px;
+  }
+
+  @media (max-width: 640px) {
+    .hero-title { font-size: 2rem; }
+  }
+
+  .hero-desc {
+    font-size: 1.0625rem;
+    color: #71717a;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 640px) {
+    .hero-desc { font-size: 0.9375rem; }
+  }
+
+  /* Topics */
+  .topics {
+    padding: 0 24px 80px;
+  }
+
+  @media (max-width: 640px) {
+    .topics { padding: 0 16px 56px; }
+  }
+
+  .topics-inner {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    padding: 0 0 10px;
+  }
+
+  .coming-soon-header {
+    margin-top: 32px;
+  }
+
+  .section-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #3f3f46;
+  }
+
+  /* Topic cards */
+  .topic-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #1f1f23;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.15s;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  a.topic-card:hover {
+    background: #16161a;
+    border-color: #27272a;
+  }
+
+  a.topic-card:hover .topic-arrow {
+    transform: translateX(3px);
+    color: #818cf8;
+  }
+
+  .topic-card-disabled {
+    cursor: default;
+    opacity: 0.45;
+  }
+
+  .topic-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #16161a;
+    border-radius: 10px;
+    color: #a1a1aa;
+    flex-shrink: 0;
+  }
+
+  a.topic-card:hover .topic-icon {
+    color: #fafafa;
+    background: #1f1f23;
+  }
+
+  .topic-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .topic-title {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #e4e4e7;
+    letter-spacing: -0.015em;
+  }
+
+  .topic-desc {
+    display: block;
+    font-size: 0.8125rem;
+    color: #52525b;
+    margin-top: 2px;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 640px) {
+    .topic-desc {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .topic-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .topic-count {
+    font-size: 0.75rem;
+    color: #52525b;
+    font-family: "Dank Mono", "Geist Mono", monospace;
+    white-space: nowrap;
+  }
+
+  .topic-arrow {
+    color: #3f3f46;
+    transition: all 0.2s;
+  }
+
+  .topic-soon-badge {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #52525b;
+    background: #18181b;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* Footer */
+  .landing-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    font-size: 0.75rem;
+    color: #3f3f46;
+    border-top: 1px solid #1f1f23;
+  }
+
+  .footer-sep {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #27272a;
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+import { getCollection } from "astro:content";
+
+const chapters = await getCollection("chapters");
+const sorted = chapters.sort((a, b) => a.data.chapter - b.data.chapter);
+
+const levels = [
+  { key: "beginner", label: "Fundamentals", color: "var(--color-green)" },
+  { key: "intermediate", label: "Scaling", color: "var(--color-yellow)" },
+  { key: "advanced", label: "Advanced", color: "var(--color-red)" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav
+  id="sidebar"
+  class="sidebar -translate-x-full"
+>
+  <div class="sidebar-header">
+    <span class="sidebar-title">Chapters</span>
+    <span class="sidebar-count">{sorted.length} topics</span>
+  </div>
+
+  <div class="sidebar-body">
+    {levels.map((level) => {
+      const items = sorted.filter((c) => c.data.level === level.key);
+      if (items.length === 0) return null;
+      return (
+        <div class="section">
+          <div class="section-label">
+            <span class="section-dot" style={`background: ${level.color};`} />
+            {level.label}
+          </div>
+          {items.map((ch) => {
+            const href = `/chapters/${ch.id}/`;
+            const isActive = currentPath === href || currentPath === `/chapters/${ch.id}`;
+            return (
+              <a
+                href={href}
+                class:list={["nav-link", { active: isActive }]}
+              >
+                <span
+                  class="nav-num"
+                  style={`background: ${isActive ? "var(--color-accent)" : "var(--color-bg-hover)"}; color: ${isActive ? "#fff" : "var(--color-text-muted)"};`}
+                >
+                  {String(ch.data.chapter).padStart(2, "0")}
+                </span>
+                <span class="nav-title" style={`color: ${isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)"};`}>
+                  {ch.data.title}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      );
+    })}
+  </div>
+</nav>
+
+<style>
+  .sidebar {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 52px);
+    z-index: 50;
+    background: var(--color-bg-secondary);
+    border-right: 1px solid var(--color-border-subtle);
+    overflow-y: auto;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.25);
+  }
+
+  @media (max-width: 480px) {
+    .sidebar { width: 260px; }
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .sidebar-title {
+    font-size: 0.8125rem;
+    font-weight: 650;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .sidebar-count {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .sidebar-body {
+    padding: 8px 0 24px;
+  }
+
+  .section {
+    margin-bottom: 4px;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px 5px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .section-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 20px;
+    text-decoration: none;
+    font-size: 0.8125rem;
+    transition: all 0.12s ease;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-link:hover {
+    background: var(--color-bg-hover);
+  }
+
+  .nav-link.active {
+    background: var(--color-accent-dim);
+    border-left-color: var(--color-accent);
+  }
+
+  .nav-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    letter-spacing: -0.02em;
+    transition: all 0.12s ease;
+  }
+
+  .nav-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 450;
+    letter-spacing: -0.01em;
+  }
+</style>

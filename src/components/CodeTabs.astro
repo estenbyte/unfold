@@ -1,0 +1,43 @@
+---
+interface Props {
+  tsFile?: string;
+  goFile?: string;
+}
+
+const { tsFile = "main.ts", goFile = "main.go" } = Astro.props;
+---
+
+<div class="code-tabs">
+  <div class="code-tabs-header">
+    <button class="code-tab-btn active" data-lang="ts">
+      <span class="tab-dot" style="background: #3178c6;"></span>
+      {tsFile}
+    </button>
+    <button class="code-tab-btn" data-lang="go">
+      <span class="tab-dot" style="background: #00add8;"></span>
+      {goFile}
+    </button>
+  </div>
+  <div class="code-tab-panel active" data-lang="ts">
+    <div style="position:relative;">
+      <button class="copy-btn">Copy</button>
+      <slot name="ts" />
+    </div>
+  </div>
+  <div class="code-tab-panel" data-lang="go">
+    <div style="position:relative;">
+      <button class="copy-btn">Copy</button>
+      <slot name="go" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .tab-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+</style>
