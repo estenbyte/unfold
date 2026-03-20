@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 **Authentication** answers "who are you?" — verifying identity via passwords, tokens, or OAuth. **Authorization** answers "what can you do?" — checking permissions to access resources.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a gym membership card — you verify your identity once at the front desk (login), get a card (token), and swipe it for access without showing your ID again. Your membership tier (basic/premium) determines what areas you can use (authorization).
+</Callout>
+
 <Diagram title="Auth Flow with JWT">
   <div class="diagram-row">
     <div class="box box-client">Client<br/><span style="font-size:0.7rem;font-weight:400;color:var(--color-text-muted)">email + password</span></div>

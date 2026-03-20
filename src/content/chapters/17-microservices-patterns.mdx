@@ -37,6 +37,12 @@ Think of it like an orchestra. In a small band, everyone can see each other and 
 
 ## Real-World Analogy
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a shopping mall — instead of one mega-store, there are specialized shops (clothing, electronics, food), each independently run with their own staff and inventory.
+</Callout>
+
 When you order on Amazon, a single "Place Order" click triggers a multi-step saga across services: the order service creates the order, the inventory service reserves the items, and the payment service charges your card. If payment fails, the saga runs compensating transactions in reverse -- unreserving inventory and cancelling the order. Netflix uses circuit breakers so that when their recommendation service goes down, the homepage still loads with a default list instead of showing an error page.
 
 ## Building a Saga Orchestrator

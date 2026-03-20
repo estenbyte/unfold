@@ -18,6 +18,12 @@ A single PostgreSQL instance handles thousands of queries per second. But eventu
 - **Replication** — copy data to read replicas for read scaling
 - **Sharding** — split data across multiple databases for write scaling
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a post office sorting mail by zip code — 90210 goes to Beverly Hills, 10001 goes to Manhattan. Each office handles only its zone's mail. That's sharding.
+</Callout>
+
 <Diagram title="Replication + Sharding Architecture">
   <div class="diagram-row">
     <div class="box box-server">App Server</div>

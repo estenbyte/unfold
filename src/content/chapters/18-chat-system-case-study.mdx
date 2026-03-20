@@ -39,6 +39,12 @@ Think of it like a postal service for a large office building. The mailroom (mes
 
 ## Real-World Analogy
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a messaging app's delivery system — single tick means sent to server, double tick means delivered to recipient, blue tick means read. Group messages fan out to all members.
+</Callout>
+
 WhatsApp handles over 100 billion messages per day. When you send a message, it goes to a message router that looks up the recipient's connection server, fans out the message, stores it, and returns a single checkmark (delivered to server). When the recipient's device receives it, you get a double checkmark. When they open the chat, you get blue checkmarks (read receipt). If the recipient is offline, the message sits in an offline queue and gets delivered the moment their phone reconnects. Telegram uses Lamport timestamps to ensure messages appear in the correct order even when sent from multiple devices simultaneously.
 
 ## Building a Chat System

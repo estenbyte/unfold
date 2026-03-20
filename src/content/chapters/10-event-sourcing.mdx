@@ -17,6 +17,12 @@ Instead of storing the current state of an entity (like an order), you store the
 
 This gives you a complete audit trail, the ability to replay events to rebuild state, and the ability to answer questions about your data that you didn't anticipate when you designed the schema.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like the announcement system at a train station — when a train arrives (event), multiple listeners react: passengers board, vendors prepare, cleaners start working.
+</Callout>
+
 ## What is CQRS?
 
 **Command Query Responsibility Segregation** separates reads from writes. Commands (writes) go through the event store. Queries (reads) go through materialized **projections** — pre-computed views optimized for specific read patterns.

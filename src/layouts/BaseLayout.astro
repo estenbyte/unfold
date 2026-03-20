@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
   title: string;
@@ -60,13 +61,15 @@ const { title, showSidebar = true } = Astro.props;
 
     <!-- Layout -->
     <div class="app-layout">
-      {showSidebar && <Sidebar />}
+      {showSidebar && <Fragment><slot name="sidebar"><Sidebar /></slot></Fragment>}
       <main class="main-content">
         <article class="animate-in prose">
           <slot />
         </article>
       </main>
     </div>
+
+    <Footer />
 
     <style>
       .header {
@@ -76,7 +79,7 @@ const { title, showSidebar = true } = Astro.props;
         right: 0;
         height: 52px;
         z-index: 50;
-        background: rgba(9, 9, 11, 0.85);
+        background: rgba(15, 20, 21, 0.85);
         backdrop-filter: saturate(180%) blur(20px);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         border-bottom: 1px solid var(--color-border-subtle);
@@ -130,7 +133,7 @@ const { title, showSidebar = true } = Astro.props;
       }
 
       .logo-text {
-        font-size: 1rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: var(--color-text-primary);
         letter-spacing: -0.04em;

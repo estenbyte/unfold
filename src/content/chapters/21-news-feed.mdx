@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 The news feed is one of the hardest problems in system design because it sits at the intersection of four challenges: **fan-out at scale** (when a celebrity with 50M followers posts, how do you update 50M feeds?), **ranking** (showing the most relevant content, not just the newest), **real-time updates** (new posts should appear without refreshing), and **infinite scroll pagination** (loading more content seamlessly as you scroll).
 
-Think of it like a personalized newspaper that rewrites itself every second. Each reader gets a different front page based on who they follow, what they engage with, and what's trending. The printing press (fan-out service) must produce millions of unique editions simultaneously. And unlike a real newspaper, readers expect new stories to appear the moment they're published.
+Think of it like a personalized newspaper that rewrites itself every second.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like a personalized newspaper — each reader gets a different front page based on their interests. The printing press must produce millions of unique editions simultaneously.
+</Callout>
+
+Each reader gets a different front page based on who they follow, what they engage with, and what's trending. The printing press (fan-out service) must produce millions of unique editions simultaneously. And unlike a real newspaper, readers expect new stories to appear the moment they're published.
 
 <Diagram title="News Feed Architecture">
   <div class="diagram-row">

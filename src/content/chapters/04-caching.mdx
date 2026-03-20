@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 Database queries take 5-50ms. Network calls take 50-500ms. Reading from Redis takes 0.1-1ms. Caching stores frequently accessed data in memory so you skip the expensive operation entirely.
 
-Think of it like keeping your most-used books on your desk instead of walking to the library every time. The desk is small (limited memory), so you only keep what you actually use.
+Think of it like keeping your most-used books on your desk instead of walking to the library every time.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like keeping your most-used books on your desk instead of walking to the library every time. The desk is small (limited memory), so you only keep what you actually use.
+</Callout>
+
+The desk is small (limited memory), so you only keep what you actually use.
 
 <Diagram title="Cache-Aside Pattern">
   <div class="diagram-row">

@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 One server can handle a few thousand requests per second. When you need more, you add more servers. A load balancer sits in front and distributes traffic across them. If one server dies, the load balancer stops sending traffic to it — no downtime for users.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a bank with multiple teller windows — instead of everyone lining up at one window, a queue manager distributes customers evenly across all open windows.
+</Callout>
+
 <Diagram title="Load Balancer Architecture">
   <div class="diagram-row">
     <div class="box box-client">Clients</div>

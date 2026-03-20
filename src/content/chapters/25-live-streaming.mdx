@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 Live streaming combines the hardest problems in distributed systems: **real-time processing** (no do-overs — if you drop a frame, it's gone), **massive concurrent viewers** (Twitch peaks at 30M+ simultaneous viewers), **low latency** (2-10 seconds from camera to screen), **adaptive quality** (viewers on 5G and 3G watch the same stream), and **chat synchronization** (chat messages should align with what's happening on screen).
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a live TV broadcast of a sports match — cameras capture the action, the production truck mixes feeds, and the signal goes to millions of viewers simultaneously with minimal delay.
+</Callout>
+
 Think of it like broadcasting live TV, but every viewer can choose their own quality level, and the broadcast infrastructure must scale from 0 to millions of viewers in seconds when a popular streamer goes live. Unlike VOD where you process the entire video before anyone watches, live streaming must transcode, package, and distribute each second of video as it's created.
 
 <Diagram title="Live Streaming Architecture">

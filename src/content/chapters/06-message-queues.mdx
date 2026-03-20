@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 When a user uploads a profile picture, you don't want them waiting while you resize it into 5 sizes, upload to CDN, update the database, and send a confirmation email. Instead, you put a message on a queue — "resize this image" — and return immediately. A worker picks up the message and processes it in the background.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a busy restaurant kitchen — orders come in faster than chefs can cook, so they're placed on a ticket rail and processed one at a time in order.
+</Callout>
+
 <Diagram title="Message Queue Architecture">
   <div class="diagram-row">
     <div class="box box-server">API Server<br/><span style="font-size:0.7rem;font-weight:400;color:var(--color-text-muted)">Producer</span></div>

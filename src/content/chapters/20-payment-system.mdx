@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 Money cannot be lost, duplicated, or misrouted. A dropped message in a chat app is annoying; a dropped payment means real financial harm. Payment systems must guarantee **exactly-once processing** (charge the customer once, never twice), maintain a **perfect audit trail** (every cent must be accounted for), handle **partial failures gracefully** (what if the network dies mid-transaction?), and deliver **webhook notifications** so merchants know what happened.
 
-Think of it like a bank's vault room with double-entry bookkeeping. Every time money moves, two entries are recorded: a debit from one account and a credit to another. The books must always balance. If the accountant is interrupted mid-entry, the incomplete transaction is rolled back. And every entry has a unique reference number — if someone accidentally submits the same deposit slip twice, the second one is recognized as a duplicate and ignored.
+Think of it like a bank's vault room with double-entry bookkeeping.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like double-entry bookkeeping — every time money moves, two entries are recorded: a debit from one account and a credit to another. The books must always balance.
+</Callout>
+
+Every time money moves, two entries are recorded: a debit from one account and a credit to another. The books must always balance. If the accountant is interrupted mid-entry, the incomplete transaction is rolled back. And every entry has a unique reference number — if someone accidentally submits the same deposit slip twice, the second one is recognized as a duplicate and ignored.
 
 <Diagram title="Payment System Architecture">
   <div class="diagram-row">

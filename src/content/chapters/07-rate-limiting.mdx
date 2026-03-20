@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 Without rate limiting, a single user or bot can overwhelm your API, deny service to everyone else, and rack up infrastructure costs. Rate limiting controls how many requests a client can make in a time window.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like an ATM daily withdrawal limit — you can only withdraw a fixed amount per day to prevent abuse. Hit the limit, and you're told to try again tomorrow.
+</Callout>
+
 <Diagram title="Rate Limiter as Middleware">
   <div class="diagram-row">
     <div class="box box-client">Client</div>

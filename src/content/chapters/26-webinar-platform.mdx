@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 Live streaming is **one-to-many**: one broadcaster, millions of passive viewers. Video conferencing is **many-to-many**: every participant can send and receive video simultaneously. Webinars sit in between — a few **presenters** broadcast to many **attendees** who interact through Q&A, chat, polls, and hand-raising. This in-between model creates unique challenges: the media architecture must handle bidirectional video for presenters while scaling to thousands of view-only attendees, all with sub-200ms audio latency.
 
-Think of it like a town hall meeting versus a TV broadcast. A TV broadcast (live streaming) goes one direction — the studio to your screen. A town hall (webinar) has speakers on stage, but the audience can raise their hand, ask questions through a moderator, and vote on proposals. The infrastructure must handle both the broadcast and the interaction simultaneously.
+Think of it like a town hall meeting versus a TV broadcast.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like a town hall meeting — speakers present on stage, the audience can raise hands, ask questions through a moderator, and vote. Unlike a TV broadcast, interaction flows both ways.
+</Callout>
+
+A TV broadcast (live streaming) goes one direction — the studio to your screen. A town hall (webinar) has speakers on stage, but the audience can raise their hand, ask questions through a moderator, and vote on proposals. The infrastructure must handle both the broadcast and the interaction simultaneously.
 
 <Diagram title="Webinar Platform Architecture">
   <div class="diagram-row">

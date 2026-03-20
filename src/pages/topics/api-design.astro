@@ -1,0 +1,250 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { apiDesignLevels, getApiDesignChaptersSorted } from "../../data/api-design";
+
+const allChapters = await getApiDesignChaptersSorted();
+---
+
+<BaseLayout title="API Design" showSidebar={false}>
+  <header class="topic-header">
+    <a href="/" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All topics
+    </a>
+    <h1 class="topic-title">API Design</h1>
+    <p class="topic-desc">
+      REST best practices, GraphQL, gRPC, versioning, pagination, and rate limiting — designing APIs that developers love.
+    </p>
+    <p class="topic-desc-detail">
+      Start with REST fundamentals and authentication basics. Progress through request/response
+      design, pagination strategies, and API versioning. Then explore GraphQL for flexible
+      querying, gRPC for high-performance internal services, and rate limiting to protect
+      your APIs at scale. Each chapter includes TypeScript examples you can use in production.
+    </p>
+    <div class="topic-stats">
+      <span class="stat">{allChapters.length} chapters</span>
+      <span class="stat-sep"></span>
+      <span class="stat">~2h reading</span>
+      <span class="stat-sep"></span>
+      <span class="stat">TypeScript</span>
+    </div>
+  </header>
+
+  <!-- Chapters by Level -->
+  {apiDesignLevels.map((level) => {
+    const items = allChapters.filter((c) => c.data.level === level.key);
+    if (items.length === 0) return null;
+    return (
+      <section class="level-section">
+        <div class="level-label">
+          <span class="level-dot" style={`background: ${level.color};`} />
+          <span class="level-name">{level.label}</span>
+          <span class="level-count">{items.length}</span>
+        </div>
+        <div class="chapter-list">
+          {items.map((ch) => (
+            <a href={`/api-design/${ch.id}/`} class="chapter-item">
+              <span class="ch-num" style={`color: ${level.color};`}>
+                {String(ch.data.chapter).padStart(2, "0")}
+              </span>
+              <div class="ch-info">
+                <span class="ch-name">{ch.data.title}</span>
+                <span class="ch-desc">{ch.data.subtitle}</span>
+              </div>
+              <span class="ch-time">{ch.data.readingTime}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ch-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          ))}
+        </div>
+      </section>
+    );
+  })}
+</BaseLayout>
+
+<style>
+  .topic-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1.25rem;
+    transition: color 0.15s;
+  }
+  .back-link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .topic-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.625rem;
+    line-height: 1.15;
+  }
+
+  .topic-desc {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin: 0 0 0.5rem;
+  }
+
+  .topic-desc-detail {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 0 1.25rem;
+  }
+
+  .topic-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .stat-sep {
+    width: 1px;
+    height: 12px;
+    background: var(--color-border);
+  }
+
+  .level-section {
+    margin-bottom: 2rem;
+  }
+
+  .level-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 0 8px;
+  }
+
+  .level-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .level-name {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+
+  .level-count {
+    font-size: 0.625rem;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+    font-family: var(--font-mono);
+    margin-left: auto;
+  }
+
+  .chapter-list {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .chapter-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    text-decoration: none;
+    transition: background 0.12s;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .chapter-item:last-child {
+    border-bottom: none;
+  }
+
+  .chapter-item:hover {
+    background: var(--color-bg-hover);
+  }
+
+  .chapter-item:hover .ch-arrow {
+    transform: translateX(3px);
+    color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .ch-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    width: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .ch-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ch-name {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 550;
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .ch-desc {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ch-time {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .chapter-item:hover .ch-time {
+    opacity: 1;
+  }
+
+  .ch-arrow {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    opacity: 0;
+  }
+
+  @media (max-width: 640px) {
+    .topic-title { font-size: 1.5rem; }
+    .ch-desc { display: none; }
+    .ch-arrow { opacity: 0.4; }
+    .ch-time { opacity: 0.6; }
+  }
+</style>

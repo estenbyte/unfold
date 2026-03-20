@@ -39,6 +39,12 @@ Think of it like a post office that handles express mail, standard mail, and bul
 
 ## Real-World Analogy
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a hospital alert system — critical alerts (code blue) go out instantly, routine reminders (appointment tomorrow) are batched and sent during business hours. Each notification's delivery status is tracked.
+</Callout>
+
 Facebook sends over 10 billion push notifications daily. When someone likes your photo, the notification system checks your preferences (do you want push notifications for likes?), checks if you're in "do not disturb" mode, checks the rate limit (have you already received 50 notifications this hour?), and then routes through the appropriate channel. For Uber, when your driver is 2 minutes away, the system must deliver that notification within seconds — it goes through the critical priority lane, bypassing all batching and rate limits. Airbnb takes the opposite approach for non-urgent updates: it batches your "homes you might like" into a weekly digest email, reducing notification fatigue while maintaining engagement.
 
 ## Requirements

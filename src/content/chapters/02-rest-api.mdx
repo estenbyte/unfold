@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 REST (Representational State Transfer) is an architectural style for designing APIs. It maps CRUD operations to HTTP methods and uses URLs to represent resources. The key constraint: every request must contain all information needed to process it — the server stores no client session state.
 
-Think of it like a library catalog system. Each book (resource) has a unique call number (URL). You can check books out (GET), add new ones (POST), update information (PUT), or remove them (DELETE). The catalog doesn't remember who you are between visits — you bring your library card (auth token) each time.
+Think of it like a library catalog system.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like a library catalog — each book (resource) has a unique call number (URL). You can check out (GET), donate (POST), update info (PUT), or remove (DELETE). The catalog doesn't remember you between visits — bring your card each time.
+</Callout>
+
+Each book (resource) has a unique call number (URL). You can check books out (GET), add new ones (POST), update information (PUT), or remove them (DELETE). The catalog doesn't remember who you are between visits — you bring your library card (auth token) each time.
 
 <Diagram title="REST Resource Mapping">
   <div class="diagram-row">

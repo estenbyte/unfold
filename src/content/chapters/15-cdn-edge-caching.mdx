@@ -31,6 +31,12 @@ Think of it like a chain of local libraries. The main library (origin server) ha
 
 ## Real-World Analogy
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a franchise with warehouses in every major city — instead of shipping everything from one central warehouse, local warehouses serve nearby customers faster.
+</Callout>
+
 When Netflix serves a new season of a show, the video files are pushed from their origin storage to CDN edge nodes around the world. A viewer in Tokyo gets the stream from a nearby edge server in Japan, not from a data center in Virginia. If the edge doesn't have the file cached, it pulls it from the origin once, then serves all subsequent Tokyo requests locally. Cloudflare does the same for web assets -- your CSS and JavaScript are cached at 300+ edge locations worldwide.
 
 ## Building a CDN Origin Server

@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 In this tutorial, we'll build a production file upload service that handles large files (up to 5GB), supports chunked and resumable uploads, validates content types, generates signed URLs for secure downloads, and processes files asynchronously (virus scanning, thumbnail generation). Think of it as a simplified version of what AWS S3, Google Drive, or Dropbox uses internally.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like submitting documents at a government office — you fill out a form, attach your files, the clerk checks everything is correct, stamps it, and files it away. Large documents get broken into sections.
+</Callout>
+
 The key insight: you can't just POST a 5GB file in one request. Networks fail, timeouts expire, and servers run out of memory. Instead, we split files into chunks, upload each chunk independently, and assemble them server-side. If the network drops, only the current chunk is lost — resume from where you left off.
 
 <Diagram title="File Upload Service Architecture">

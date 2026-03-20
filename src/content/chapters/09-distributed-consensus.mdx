@@ -17,6 +17,12 @@ In a distributed system, multiple servers must agree on the same value even when
 
 **Raft** solves this by electing a single leader that makes all decisions. If the leader dies, the remaining nodes elect a new one. This is simpler than alternatives like Paxos while being equally correct.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a board of directors voting — multiple members must agree on a decision, and it takes a majority to pass. If the chair resigns, a new election happens.
+</Callout>
+
 <Diagram title="Raft Leader Election">
   <div class="diagram-row">
     <div class="box box-server" style="border-color:var(--color-green);color:var(--color-green);">Leader<br/><span style="font-size:0.7rem;font-weight:400;">Term 3</span></div>

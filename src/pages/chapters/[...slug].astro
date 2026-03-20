@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getChaptersSorted } from "../../data/chapters";
 
 export async function getStaticPaths() {
   const chapters = await getCollection("chapters");
@@ -13,9 +14,7 @@ export async function getStaticPaths() {
 const { chapter } = Astro.props;
 const { Content } = await render(chapter);
 
-const allChapters = (await getCollection("chapters")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
+const allChapters = await getChaptersSorted();
 const idx = allChapters.findIndex((c) => c.id === chapter.id);
 const prev = idx > 0 ? allChapters[idx - 1] : null;
 const next = idx < allChapters.length - 1 ? allChapters[idx + 1] : null;

@@ -15,7 +15,15 @@ import Callout from "../../components/Callout.astro";
 
 Every system that stores state needs a database. Choosing the right database and using it correctly is the difference between a system that scales and one that falls over at 100 concurrent users.
 
-Think of a database like a filing cabinet with a very smart secretary. You tell the secretary what you want (query), and they find it for you. If the filing cabinet is well-organized (indexed), lookups are fast. If you hire multiple secretaries (connection pool), you can serve more people simultaneously.
+Think of a database like a filing cabinet with a very smart secretary.
+
+<Callout type="info">
+**Real-World Analogy**
+
+Like a filing cabinet with a smart secretary — you describe what you want (query), and they find it. If the cabinet is well-organized (indexed), lookups are fast. More secretaries (connection pool) means more people served simultaneously.
+</Callout>
+
+You tell the secretary what you want (query), and they find it for you. If the filing cabinet is well-organized (indexed), lookups are fast. If you hire multiple secretaries (connection pool), you can serve more people simultaneously.
 
 <Diagram title="Application to Database Flow">
   <div class="diagram-row">

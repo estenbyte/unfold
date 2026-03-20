@@ -1,15 +1,8 @@
 ---
-import { getCollection } from "astro:content";
+import { levels, getChaptersSorted, groupChapters } from "../data/chapters";
 
-const chapters = await getCollection("chapters");
-const sorted = chapters.sort((a, b) => a.data.chapter - b.data.chapter);
-
-const levels = [
-  { key: "beginner", label: "Fundamentals", color: "var(--color-green)" },
-  { key: "intermediate", label: "Scaling", color: "var(--color-yellow)" },
-  { key: "advanced", label: "Advanced", color: "var(--color-red)" },
-];
-
+const sorted = await getChaptersSorted();
+const { core, tutorials, caseStudies } = groupChapters(sorted);
 const currentPath = Astro.url.pathname;
 ---
 
@@ -23,8 +16,9 @@ const currentPath = Astro.url.pathname;
   </div>
 
   <div class="sidebar-body">
+    {/* Core chapters by level */}
     {levels.map((level) => {
-      const items = sorted.filter((c) => c.data.level === level.key);
+      const items = core.filter((c) => c.data.level === level.key);
       if (items.length === 0) return null;
       return (
         <div class="section">
@@ -42,7 +36,7 @@ const currentPath = Astro.url.pathname;
               >
                 <span
                   class="nav-num"
-                  style={`background: ${isActive ? "var(--color-accent)" : "var(--color-bg-hover)"}; color: ${isActive ? "#fff" : "var(--color-text-muted)"};`}
+                  style={`background: ${isActive ? "var(--color-accent)" : "var(--color-bg-hover)"}; color: ${isActive ? "#0f1415" : "var(--color-text-muted)"};`}
                 >
                   {String(ch.data.chapter).padStart(2, "0")}
                 </span>
@@ -55,6 +49,66 @@ const currentPath = Astro.url.pathname;
         </div>
       );
     })}
+
+    {/* Tutorials */}
+    {tutorials.length > 0 && (
+      <div class="section">
+        <div class="section-label">
+          <span class="section-dot" style="background: var(--color-accent);" />
+          Tutorials
+        </div>
+        {tutorials.map((ch) => {
+          const href = `/chapters/${ch.id}/`;
+          const isActive = currentPath === href || currentPath === `/chapters/${ch.id}`;
+          return (
+            <a
+              href={href}
+              class:list={["nav-link", { active: isActive }]}
+            >
+              <span
+                class="nav-num"
+                style={`background: ${isActive ? "var(--color-accent)" : "var(--color-bg-hover)"}; color: ${isActive ? "#0f1415" : "var(--color-text-muted)"};`}
+              >
+                {String(ch.data.chapter).padStart(2, "0")}
+              </span>
+              <span class="nav-title" style={`color: ${isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)"};`}>
+                {ch.data.title}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    )}
+
+    {/* Case Studies */}
+    {caseStudies.length > 0 && (
+      <div class="section">
+        <div class="section-label">
+          <span class="section-dot" style="background: #f59e0b;" />
+          Case Studies
+        </div>
+        {caseStudies.map((ch) => {
+          const href = `/chapters/${ch.id}/`;
+          const isActive = currentPath === href || currentPath === `/chapters/${ch.id}`;
+          return (
+            <a
+              href={href}
+              class:list={["nav-link", { active: isActive }]}
+            >
+              <span
+                class="nav-num"
+                style={`background: ${isActive ? "var(--color-accent)" : "var(--color-bg-hover)"}; color: ${isActive ? "#0f1415" : "var(--color-text-muted)"};`}
+              >
+                {String(ch.data.chapter).padStart(2, "0")}
+              </span>
+              <span class="nav-title" style={`color: ${isActive ? "var(--color-text-primary)" : "var(--color-text-secondary)"};`}>
+                {ch.data.title}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    )}
   </div>
 </nav>
 

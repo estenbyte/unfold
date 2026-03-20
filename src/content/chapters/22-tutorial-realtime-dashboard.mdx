@@ -15,6 +15,12 @@ import Callout from "../../components/Callout.astro";
 
 In this tutorial, we'll build a real-time analytics dashboard from scratch — like a simplified version of Google Analytics or Mixpanel. The system tracks page views, unique visitors, active users, and custom events. Data flows in through an event ingestion API, gets aggregated into time-series buckets (minute/hour/day), and streams to connected dashboards via WebSocket.
 
+<Callout type="info">
+**Real-World Analogy**
+
+Like a stock exchange trading floor — real-time screens show live prices, volume, and trends. When a big trade happens, the board updates instantly.
+</Callout>
+
 By the end, you'll have a working system that can ingest 100K+ events per second, aggregate them into queryable time-series data, and push live updates to dashboard clients the instant new data arrives.
 
 <Diagram title="Real-Time Dashboard Architecture">
