@@ -32,6 +32,10 @@ const frontendChapters = (await getCollection("frontend")).sort(
   (a, b) => a.data.chapter - b.data.chapter
 );
 
+const golangChapters = (await getCollection("golang")).sort(
+  (a, b) => a.data.chapter - b.data.chapter
+);
+
 const topics = [
   {
     slug: "system-design",
@@ -88,6 +92,14 @@ const topics = [
     chapters: frontendChapters.length,
     icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
     href: "/topics/frontend/",
+  },
+  {
+    slug: "golang",
+    title: "Go (Golang)",
+    desc: "From zero to production Go — types, concurrency, error handling, and patterns used at Google, Uber, and Cloudflare.",
+    chapters: golangChapters.length,
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    href: "/topics/golang/",
   },
 ];
 

@@ -85,4 +85,16 @@ const frontend = defineCollection({
   }),
 });
 
-export const collections = { chapters, dsa, networking, "db-internals": dbInternals, devops, "api-design": apiDesign, frontend };
+const golang = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/golang" }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string(),
+    chapter: z.number(),
+    level: z.enum(["beginner", "intermediate", "advanced"]),
+    readingTime: z.string(),
+    topics: z.array(z.string()),
+  }),
+});
+
+export const collections = { chapters, dsa, networking, "db-internals": dbInternals, devops, "api-design": apiDesign, frontend, golang };
