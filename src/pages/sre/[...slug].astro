@@ -24,6 +24,7 @@ const levelColors: Record<string, string> = {
   beginner: "badge-beginner",
   intermediate: "badge-intermediate",
   advanced: "badge-advanced",
+  mastery: "badge-mastery",
 };
 ---
 
@@ -71,14 +72,14 @@ const levelColors: Record<string, string> = {
 <style>
   .back-link { display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600; color: var(--color-text-muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.04em; transition: color 0.15s; }
   .back-link:hover { color: var(--color-text-primary); }
-  .ch-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border-subtle); }
-  .ch-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .ch-header { margin-bottom: 4rem; padding-bottom: 2.75rem; border-bottom: 1px solid var(--color-border-subtle); }
+  .ch-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 1.625rem; flex-wrap: wrap; }
   .ch-meta-sep { width: 1px; height: 12px; background: var(--color-border); }
-  .ch-meta-item { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-mono); letter-spacing: 0.01em; }
-  .ch-title { font-size: 2rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.035em; color: var(--color-text-primary); margin-bottom: 0.75rem; }
-  .ch-subtitle { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.65; }
-  .ch-nav { display: flex; justify-content: space-between; align-items: stretch; margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border-subtle); gap: 12px; }
-  .ch-nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 10px; text-decoration: none; color: var(--color-text-secondary); transition: all 0.15s ease; max-width: 280px; }
+  .ch-meta-item { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-mono); letter-spacing: 0.01em; }
+  .ch-title { font-size: 2.125rem; font-weight: 800; line-height: 1.18; letter-spacing: -0.035em; color: var(--color-text-primary); margin-bottom: 1.125rem; }
+  .ch-subtitle { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.7; }
+  .ch-nav { display: flex; justify-content: space-between; align-items: stretch; margin-top: 5.5rem; padding-top: 2.25rem; border-top: 1px solid var(--color-border-subtle); gap: 16px; }
+  .ch-nav-link { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 12px; text-decoration: none; color: var(--color-text-secondary); transition: all 0.15s ease; max-width: 300px; }
   .ch-nav-link:hover { border-color: var(--color-text-muted); background: var(--color-bg-hover); }
   .ch-nav-link svg { color: var(--color-text-muted); flex-shrink: 0; transition: transform 0.2s; }
   .ch-nav-prev:hover svg { transform: translateX(-3px); }

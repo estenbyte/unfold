@@ -13,25 +13,27 @@ const allChapters = await getSreChaptersSorted();
     </a>
     <h1 class="topic-title">Site Reliability Engineering</h1>
     <p class="topic-desc">
-      How Google, Netflix, and Stripe keep multi-billion-request systems online.
-      SLOs, error budgets, on-call, postmortems, chaos, and the math behind
-      "four nines."
+      Zero to mastery. How Google, Netflix, Stripe, and Cloudflare keep
+      multi-billion-request systems online — and the staff-level depth to
+      operate, design, and lead reliability programs.
     </p>
     <p class="topic-desc-detail">
       Start with what SRE actually is and why error budgets change everything.
-      Learn to define SLIs/SLOs that survive lawyer review, run an on-call
-      rotation that doesn't burn people out, write postmortems that prevent the
-      next outage, plan capacity using queueing theory, run chaos experiments in
-      production safely, and design disaster recovery you've actually tested.
-      Every chapter ships with real code: PromQL queries, Go services,
-      Terraform, k6 load tests, and runbooks you can adapt.
+      Learn to define SLIs/SLOs that survive lawyer review, run on-call without
+      burning people out, write postmortems that prevent the next outage, plan
+      capacity, run chaos safely, and design tested disaster recovery. Then go
+      deep: Linux performance with perf and eBPF, networking from BGP to XDP,
+      database internals, distributed-systems theory (Raft, CRDTs, fencing
+      tokens), Kubernetes at 1,000+ nodes, service mesh internals, FinOps,
+      and the org-design playbook for staff+ SRE work. Every chapter ships
+      with real code: PromQL, Go, Terraform, k6, bpftrace one-liners, runbooks.
     </p>
     <div class="topic-stats">
       <span class="stat">{allChapters.length} chapters</span>
       <span class="stat-sep"></span>
-      <span class="stat">~3h reading</span>
+      <span class="stat">~8h reading</span>
       <span class="stat-sep"></span>
-      <span class="stat">Go + TypeScript + PromQL + YAML</span>
+      <span class="stat">Go + TypeScript + PromQL + YAML + bpftrace</span>
     </div>
   </header>
 
@@ -64,31 +66,31 @@ const allChapters = await getSreChaptersSorted();
 </BaseLayout>
 
 <style>
-  .topic-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border-subtle); }
-  .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; font-weight: 500; color: var(--color-text-muted); text-decoration: none; margin-bottom: 1.25rem; transition: color 0.15s; }
+  .topic-header { margin-bottom: 4rem; padding-bottom: 2.75rem; border-bottom: 1px solid var(--color-border-subtle); }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; font-weight: 500; color: var(--color-text-muted); text-decoration: none; margin-bottom: 1.75rem; transition: color 0.15s; }
   .back-link:hover { color: var(--color-text-primary); }
-  .topic-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.035em; color: var(--color-text-primary); margin: 0 0 0.625rem; line-height: 1.15; }
-  .topic-desc { font-size: 1rem; color: var(--color-text-secondary); line-height: 1.65; margin: 0 0 0.5rem; }
-  .topic-desc-detail { font-size: 0.875rem; color: var(--color-text-muted); line-height: 1.7; margin: 0 0 1.25rem; }
-  .topic-stats { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .topic-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.035em; color: var(--color-text-primary); margin: 0 0 1rem; line-height: 1.15; }
+  .topic-desc { font-size: 1.0625rem; color: var(--color-text-secondary); line-height: 1.75; margin: 0 0 1rem; }
+  .topic-desc-detail { font-size: 0.9375rem; color: var(--color-text-muted); line-height: 1.8; margin: 0 0 2rem; }
+  .topic-stats { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
   .stat { font-size: 0.75rem; font-weight: 500; color: var(--color-text-muted); font-family: var(--font-mono); }
   .stat-sep { width: 1px; height: 12px; background: var(--color-border); }
-  .level-section { margin-bottom: 2rem; }
-  .level-label { display: flex; align-items: center; gap: 8px; padding: 0 0 8px; }
+  .level-section { margin-bottom: 3rem; }
+  .level-label { display: flex; align-items: center; gap: 9px; padding: 0 0 14px; }
   .level-dot { width: 6px; height: 6px; border-radius: 50%; }
   .level-name { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
   .level-count { font-size: 0.625rem; color: var(--color-text-muted); opacity: 0.5; font-family: var(--font-mono); margin-left: auto; }
-  .chapter-list { border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; }
-  .chapter-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; text-decoration: none; transition: background 0.12s; border-bottom: 1px solid var(--color-border-subtle); }
+  .chapter-list { border: 1px solid var(--color-border); border-radius: 14px; overflow: hidden; }
+  .chapter-item { display: flex; align-items: center; gap: 18px; padding: 18px 22px; text-decoration: none; transition: background 0.12s; border-bottom: 1px solid var(--color-border-subtle); }
   .chapter-item:last-child { border-bottom: none; }
   .chapter-item:hover { background: var(--color-bg-hover); }
   .chapter-item:hover .ch-arrow { transform: translateX(3px); color: var(--color-accent); opacity: 1; }
   .ch-num { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; flex-shrink: 0; width: 24px; letter-spacing: -0.02em; }
   .ch-info { flex: 1; min-width: 0; }
-  .ch-name { display: block; font-size: 0.9375rem; font-weight: 550; color: var(--color-text-primary); letter-spacing: -0.015em; }
-  .ch-desc { display: block; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ch-name { display: block; font-size: 0.9375rem; font-weight: 550; color: var(--color-text-primary); letter-spacing: -0.015em; line-height: 1.4; }
+  .ch-desc { display: block; font-size: 0.78125rem; color: var(--color-text-muted); margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.5; }
   .ch-time { font-size: 0.6875rem; color: var(--color-text-muted); font-family: var(--font-mono); flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
   .chapter-item:hover .ch-time { opacity: 1; }
   .ch-arrow { color: var(--color-text-muted); flex-shrink: 0; transition: all 0.2s; opacity: 0; }
-  @media (max-width: 640px) { .topic-title { font-size: 1.5rem; } .ch-desc { display: none; } .ch-arrow { opacity: 0.4; } .ch-time { opacity: 0.6; } }
+  @media (max-width: 640px) { .topic-title { font-size: 1.625rem; } .ch-desc { display: none; } .ch-arrow { opacity: 0.4; } .ch-time { opacity: 0.6; } .chapter-item { padding: 15px 18px; } }
 </style>

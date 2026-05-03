@@ -103,7 +103,7 @@ const sre = defineCollection({
     title: z.string(),
     subtitle: z.string(),
     chapter: z.number(),
-    level: z.enum(["beginner", "intermediate", "advanced"]),
+    level: z.enum(["beginner", "intermediate", "advanced", "mastery"]),
     readingTime: z.string(),
     topics: z.array(z.string()),
   }),
