@@ -36,6 +36,10 @@ const golangChapters = (await getCollection("golang")).sort(
   (a, b) => a.data.chapter - b.data.chapter
 );
 
+const sreChapters = (await getCollection("sre")).sort(
+  (a, b) => a.data.chapter - b.data.chapter
+);
+
 const topics = [
   {
     slug: "system-design",
@@ -100,6 +104,14 @@ const topics = [
     chapters: golangChapters.length,
     icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
     href: "/topics/golang/",
+  },
+  {
+    slug: "sre",
+    title: "Site Reliability Engineering",
+    desc: "SLOs, error budgets, on-call, postmortems, chaos, and disaster recovery — keeping production alive at scale.",
+    chapters: sreChapters.length,
+    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+    href: "/topics/sre/",
   },
 ];
 
