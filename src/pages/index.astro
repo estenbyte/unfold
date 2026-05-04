@@ -115,6 +115,59 @@ const topics = [
   },
 ];
 
+const pathCore = [
+  { n: 1, title: "Linux & VPS basics", desc: "Processes, sockets, systemd, iptables. Rent a VPS, ssh in.", href: "/topics/linux-vps/" },
+  { n: 2, title: "Networking essentials", desc: "TCP/UDP, DNS, HTTP from raw socket.", href: "/topics/networking/" },
+  { n: 3, title: "Web server fundamentals", desc: "Build minimal HTTP server. Then nginx reverse proxy.", href: "/topics/web-server/" },
+  { n: 4, title: "TLS & certs", desc: "Self-sign, then Let's Encrypt with certbot. No managed services.", href: "/topics/tls-certs/" },
+  { n: 5, title: "REST API building", desc: "Routing, verbs, status codes, validation, errors, pagination, idempotency.", href: "/topics/api-design/" },
+  { n: 6, title: "GraphQL building", desc: "Schema, resolvers, N+1, dataloader. Self-host.", href: "/topics/graphql/" },
+  { n: 7, title: "gRPC building", desc: "Proto, codegen, unary + streaming.", href: "/topics/grpc/" },
+  { n: 8, title: "WebSockets & realtime", desc: "Long-poll → SSE → WS. Build a chat.", href: "/topics/websockets/" },
+  { n: 9, title: "Webhooks", desc: "Sign, verify, retry, replay protect.", href: "/topics/webhooks/" },
+  { n: 10, title: "Data modeling", desc: "Schema, normalization, ER, keys, constraints.", href: "/topics/data-modeling/" },
+  { n: 11, title: "Databases self-hosted", desc: "Install Postgres on VPS. Transactions, indexes, EXPLAIN.", href: "/topics/db-internals/" },
+  { n: 12, title: "Auth & security", desc: "Sessions, argon2, OAuth flows, CSRF, rate limit by hand.", href: "/topics/auth-security/" },
+  { n: 13, title: "API gateway", desc: "Own one with nginx/Kong/Envoy. Auth, rate limit, route.", href: "/topics/api-gateway/" },
+  { n: 14, title: "Caching", desc: "In-process LRU first. Self-host Redis. Eviction, invalidation, stampede.", href: "/topics/caching/" },
+  { n: 15, title: "Background jobs", desc: "Worker loop + Postgres/Redis queue. Retry, DLQ, idempotency.", href: "/topics/background-jobs/" },
+  { n: 16, title: "Messaging & queues", desc: "Self-host RabbitMQ/NATS. Then Kafka cluster on 3 VPS.", href: "/topics/messaging/" },
+  { n: 17, title: "Event-driven & streaming", desc: "Pub/sub, CDC with Debezium, event sourcing.", href: "/topics/event-driven/" },
+  { n: 18, title: "File & object storage", desc: "Local disk → NFS → self-host MinIO. CDN via nginx + Varnish.", href: "/topics/storage/" },
+  { n: 19, title: "Search", desc: "Inverted index from scratch. Then self-host Meilisearch/Elastic.", href: "/topics/search/" },
+  { n: 20, title: "Load balancing", desc: "HAProxy/nginx. L4 vs L7, health checks, sticky sessions.", href: "/topics/load-balancing/" },
+  { n: 21, title: "Horizontal scaling", desc: "Multiple app VPS behind LB. Stateless app, shared session store.", href: "/topics/horizontal-scaling/" },
+  { n: 22, title: "Replication & sharding", desc: "Postgres streaming replica by hand. Manual shard routing.", href: "/topics/replication-sharding/" },
+  { n: 23, title: "Observability", desc: "Logs (journald), Prometheus + Grafana, Jaeger/OTel traces. Self-hosted.", href: "/topics/observability/" },
+];
+
+const pathSpecialized = [
+  { n: 24, title: "CI/CD", desc: "Git hooks → self-hosted Gitea Actions / Drone. Build, test, deploy.", href: "/topics/devops/" },
+  { n: 25, title: "Containers", desc: "Docker fundamentals, image layers, registry self-host.", href: "/topics/containers/" },
+  { n: 26, title: "Orchestration", desc: "k3s cluster across own VPS. Not EKS/GKE.", href: "/topics/orchestration/" },
+  { n: 27, title: "Infrastructure as Code", desc: "Ansible playbooks → Terraform against own infra.", href: "/topics/iac/" },
+  { n: 28, title: "Testing strategy", desc: "Unit, integration, contract, e2e. Load test with k6/wrk.", href: "/topics/testing/" },
+  { n: 29, title: "Performance engineering", desc: "Profile (pprof, perf), flamegraphs, latency budgets.", href: "/topics/performance/" },
+  { n: 30, title: "SRE practices", desc: "SLO, error budget, on-call, postmortem, runbook.", href: "/topics/sre/" },
+  { n: 31, title: "Disaster recovery", desc: "pg_dump, WAL-G, restore drills, multi-region replica.", href: "/topics/disaster-recovery/" },
+  { n: 32, title: "Capacity & cost", desc: "Bare metal vs VPS vs cloud math. Sizing.", href: "/topics/capacity-cost/" },
+  { n: 33, title: "Microservices", desc: "When to split, gRPC, service discovery (Consul), Envoy/Linkerd.", href: "/topics/microservices/" },
+  { n: 34, title: "Chaos & resilience", desc: "kill -9, pumba, network partition tests.", href: "/topics/chaos-resilience/" },
+];
+
+const pathGroups = [
+  {
+    label: "Fundamentals & core",
+    blurb: "Build a working backend on a VPS, end to end. Each step assumes the one before it.",
+    steps: pathCore,
+  },
+  {
+    label: "Specialized & operations",
+    blurb: "Once the system is alive — operate it, scale it, keep it alive when things break.",
+    steps: pathSpecialized,
+  },
+];
+
 const upcoming = [
   {
     title: "Operating Systems",
@@ -189,6 +242,42 @@ const upcoming = [
           step-by-step explanations with real code you can run.
           Pick a topic and start learning.
         </p>
+      </div>
+    </section>
+
+    <!-- Backend Engineering Path -->
+    <section class="path-section">
+      <div class="path-inner">
+        <div class="section-header">
+          <span class="section-label">Backend engineering path</span>
+        </div>
+        <p class="path-intro">
+          Step-by-step. Self-hosted. No managed cloud — you run every piece on a VPS so you understand it.
+        </p>
+
+        {pathGroups.map((group) => (
+          <div class="path-group">
+            <div class="path-group-header">
+              <span class="path-group-label">{group.label}</span>
+              <span class="path-group-count">{group.steps.length} steps</span>
+            </div>
+            <p class="path-group-blurb">{group.blurb}</p>
+            <ol class="path-list">
+              {group.steps.map((step) => (
+                <li class="path-step">
+                  <a href={step.href} class="path-link">
+                    <span class="path-num">{String(step.n).padStart(2, "0")}</span>
+                    <span class="path-info">
+                      <span class="path-title">{step.title}</span>
+                      <span class="path-desc">{step.desc}</span>
+                    </span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="path-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -434,6 +523,173 @@ const upcoming = [
   .topic-arrow {
     color: #3f3f46;
     transition: all 0.2s;
+  }
+
+  /* Path */
+  .path-section {
+    padding: 0 24px 72px;
+  }
+
+  @media (max-width: 640px) {
+    .path-section { padding: 0 16px 48px; }
+  }
+
+  .path-inner {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .path-intro {
+    font-size: 0.875rem;
+    color: #71717a;
+    line-height: 1.6;
+    margin: 0 0 18px;
+  }
+
+  .path-group {
+    margin-bottom: 36px;
+  }
+
+  .path-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .path-group-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 0 4px;
+  }
+
+  .path-group-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #e4e4e7;
+    letter-spacing: -0.01em;
+  }
+
+  .path-group-count {
+    font-size: 0.6875rem;
+    color: #52525b;
+    font-family: "Dank Mono", "Geist Mono", monospace;
+  }
+
+  .path-group-blurb {
+    font-size: 0.8125rem;
+    color: #71717a;
+    line-height: 1.55;
+    margin: 0 0 12px;
+  }
+
+  .path-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid #1f1f23;
+    padding-left: 0;
+  }
+
+  .path-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-left: 8px;
+    position: relative;
+  }
+
+  .path-step::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 20px;
+    width: 8px;
+    height: 1px;
+    background: #1f1f23;
+  }
+
+  .path-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin: -12px -14px;
+    transition: background 0.15s;
+  }
+
+  .path-link:hover {
+    background: #16161a;
+  }
+
+  .path-link:hover .path-arrow {
+    transform: translateX(3px);
+    color: #a3e635;
+  }
+
+  .path-link:hover .path-title {
+    color: #fafafa;
+  }
+
+  .path-num {
+    font-family: "Dank Mono", "Geist Mono", monospace;
+    font-size: 0.75rem;
+    color: #52525b;
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 22px;
+  }
+
+  .path-info {
+    flex: 1;
+    min-width: 0;
+    display: block;
+  }
+
+  .path-title {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #e4e4e7;
+    letter-spacing: -0.015em;
+    transition: color 0.15s;
+  }
+
+  .path-desc {
+    display: block;
+    font-size: 0.8125rem;
+    color: #52525b;
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  .path-step-soon .path-title {
+    color: #71717a;
+  }
+
+  .path-arrow {
+    color: #3f3f46;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .path-soon {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #52525b;
+    background: #18181b;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
   .topic-soon-badge {
