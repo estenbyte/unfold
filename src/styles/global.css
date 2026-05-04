@@ -12,8 +12,9 @@
   --color-border-subtle: #1f1f23;
   --color-border-active: #a3e635;
   --color-text-primary: #fafafa;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #52525b;
+  --color-text-body: #d4d4d8;       /* long-form reading — used by .prose */
+  --color-text-secondary: #b9bcc1;  /* UI subtext, descriptions */
+  --color-text-muted: #71717a;      /* meta info, list markers */
   --color-accent: #a3e635;
   --color-accent-hover: #bef264;
   --color-accent-dim: #a3e63515;
@@ -72,10 +73,10 @@ body {
    =================================== */
 .prose {
   max-width: none;
-  color: var(--color-text-secondary);
-  line-height: 1.9;
+  color: var(--color-text-body);
+  line-height: 1.85;
   font-size: 1.0625rem;
-  letter-spacing: -0.006em;
+  letter-spacing: -0.003em;
 }
 
 .prose h2 {
@@ -136,7 +137,7 @@ body {
   margin: 2.25rem 0;
   background: var(--color-accent-dim);
   border-radius: 0 10px 10px 0;
-  color: var(--color-text-secondary);
+  color: var(--color-text-body);
   font-style: normal;
 }
 
