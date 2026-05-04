@@ -65,14 +65,14 @@ brew install gh                                   # GitHub CLI
 # Accounts (free tiers are enough for this roadmap)
 - A GitHub account
 - A free Grafana Cloud account (for hosted Prometheus + Loki)
-- A free PagerDuty account (one user, one schedule)
+- An on-call tool with a free tier — PagerDuty (single-user only since 2025), Grafana OnCall, Opsgenie, or self-hosted Alertmanager
 - A small cloud account: Fly.io, DigitalOcean, or AWS Free Tier
 ```
 
 Verify install:
 
 ```bash
-kubectl version --client    # >= 1.28
+kubectl version --client    # >= 1.30 (1.28 went EOL in 2025)
 helm version                # >= 3.14
 go version                  # >= 1.22
 terraform version           # >= 1.7
@@ -559,6 +559,15 @@ If you finished week 8 and want to go deeper, the highest-leverage next steps:
 2. **Contribute to an open-source SRE tool.** Prometheus, Thanos, OpenTelemetry, kube-prometheus-stack. Even small docs PRs build context.
 3. **Read every public postmortem.** GitHub is full of them. Make a habit of reading one per week.
 4. **Apply for SRE roles.** A capstone on GitHub + a writeup beats a generic resume by an order of magnitude.
+
+## Stay current
+
+This roadmap is curated for 2026. Tools shift fast. For live references:
+
+- [Google SRE books](https://sre.google/books/) — free, the canonical curriculum
+- [CNCF Landscape](https://landscape.cncf.io) — what's actually in production now
+- [Kubernetes docs](https://kubernetes.io/docs/) — version-tracked, always current
+- [USENIX SREcon talks](https://www.usenix.org/conferences) — what working SREs are doing this year
 
 ## Key Takeaways
 

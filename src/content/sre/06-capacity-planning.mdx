@@ -158,8 +158,9 @@ Run it:
 k6 run --out cloud checkout.js
 
 # Or output Prometheus metrics for your own stack
+# (the prometheus-rw output graduated from experimental in k6 v0.50)
 k6 run \
-  --out experimental-prometheus-rw \
+  --out prometheus-rw \
   -e K6_PROMETHEUS_RW_SERVER_URL=http://prometheus:9090/api/v1/write \
   checkout.js
 ```
@@ -274,6 +275,13 @@ print(f"Forecasted 90-day peak RPS: {peak_forecast:.0f}")
 ```
 
 The bound matters more than the point estimate. You are sizing for the worst case in the planning window, not the average.
+
+## Stay current
+
+- [k6 docs](https://grafana.com/docs/k6/) — load testing, version-tracked
+- [Google SRE Workbook — Managing Load](https://sre.google/workbook/managing-load/) — practical patterns
+- [Brendan Gregg — Capacity Planning](https://www.brendangregg.com/usemethod.html) — bottleneck-first thinking
+- [AWS Builders' Library — Caching challenges](https://aws.amazon.com/builders-library/) — real-world scaling writeups
 
 ## Key Takeaways
 

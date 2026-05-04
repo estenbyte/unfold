@@ -109,7 +109,7 @@ SELECT datname, age(datfrozenxid) FROM pg_database ORDER BY 2 DESC;
 -- Anything > 1.5 billion: page now.
 ```
 
-Wraparound has taken down Sentry, Mailchimp, and others. Modern PG (14+) handles it better but the failure mode still exists.
+Wraparound has taken down Sentry, Mailchimp, and others. Modern PG (14+, including PG 16/17) handles it better — incremental freezing reduces emergency vacuums — but the 32-bit XID failure mode still exists. Monitor `age(datfrozenxid)` and alert at 1.5B regardless of version.
 
 ## Replication lag — the metric you must alert on
 
@@ -409,6 +409,13 @@ Tier F
 4. **Schema migration without `CONCURRENTLY` or batch backfill.** A 30-minute lock on `users` is a P0.
 5. **No `statement_timeout` on the app side.** A runaway report eats every connection.
 6. **Vacuum disabled "to reduce noise."** You will visit wraparound. It is unfun.
+
+## Stay current
+
+- [PostgreSQL docs](https://www.postgresql.org/docs/current/) — version-current; the index for performance, MVCC, WAL
+- [MySQL reference](https://dev.mysql.com/doc/refman/en/) — InnoDB internals
+- [Use the Index, Luke](https://use-the-index-luke.com/) — index theory, free
+- [Designing Data-Intensive Applications (Kleppmann)](https://dataintensive.net/) — durable database fundamentals
 
 ## Key Takeaways
 

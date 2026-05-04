@@ -262,6 +262,7 @@ net.ipv4.tcp_wmem = "4096 65536 16777216"
 ```bash
 # CUBIC (default) — assumes loss = congestion. Fine on LAN, bad on lossy WAN.
 # BBR (Google) — model-based. Wins on internet paths with random loss.
+# Kernel 6.0+ uses BBRv2/v3 automatically when you set bbr — no extra config.
 sysctl -w net.core.default_qdisc=fq
 sysctl -w net.ipv4.tcp_congestion_control=bbr
 ```
@@ -363,6 +364,13 @@ Tier F
   GUI-only network tools that don't run on a headless box.
   Random sysctl tuning blog posts from 2012.
 ```
+
+## Stay current
+
+- [Cloudflare blog](https://blog.cloudflare.com/) — best public source for TCP/QUIC/edge networking
+- [Linux networking docs](https://www.kernel.org/doc/html/latest/networking/index.html) — sysctl + stack reference
+- [High Performance Browser Networking (Ilya Grigorik)](https://hpbn.co/) — free book, still authoritative
+- [QUIC working group docs](https://quicwg.org/) — HTTP/3 evolution
 
 ## Key Takeaways
 

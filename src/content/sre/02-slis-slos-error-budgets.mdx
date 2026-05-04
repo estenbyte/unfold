@@ -118,7 +118,7 @@ Each additional 9 costs roughly **10x more engineering effort** than the previou
 
 ## Recording the SLO in Prometheus
 
-Production-grade SLO tracking using recording rules and burn-rate alerts. This is the same shape Google's free `sloth` tool generates.
+Production-grade SLO tracking using recording rules and burn-rate alerts. This is the same shape `sloth` generates. `sloth` is one option; many teams now codify SLI rules directly in IaC, or use the [OpenSLO](https://github.com/OpenSLO/OpenSLO) spec to stay portable.
 
 ```yaml
 # prometheus/rules/checkout-slo.yml
@@ -259,6 +259,13 @@ This document is signed off by the engineering manager AND the product manager. 
 // You set 99.95% in 2022 and the service has done 99.99% for a year.
 // You are leaving error budget on the table → tighten the SLO.
 ```
+
+## Stay current
+
+- [Google SRE Workbook — Implementing SLOs](https://sre.google/workbook/implementing-slos/) — the source material
+- [OpenSLO spec](https://github.com/OpenSLO/OpenSLO) — vendor-neutral SLO definitions
+- [Sloth](https://sloth.dev) — Prometheus SLO generator, still actively maintained
+- [Alex Hidalgo — Implementing SLOs (book)](https://www.alex-hidalgo.com/the-art-of-slos) — practical depth
 
 ## Key Takeaways
 

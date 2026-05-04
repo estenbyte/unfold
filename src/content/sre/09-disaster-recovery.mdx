@@ -331,7 +331,7 @@ Every one of these is preventable with a thorough drill. They are not preventabl
 
 ## Backup security (the ransomware problem)
 
-In 2024 and 2025, multiple ransomware attacks specifically targeted backup systems first, then encrypted production. Modern backup hygiene:
+In recent years (2024–2026), multiple ransomware attacks specifically targeted backup systems first, then encrypted production. Modern backup hygiene:
 
 ```
 1. Immutable backups
@@ -353,6 +353,13 @@ In 2024 and 2025, multiple ransomware attacks specifically targeted backup syste
 ```
 
 The "separate credentials" rule alone defeats most ransomware playbooks.
+
+## Stay current
+
+- [AWS Disaster Recovery whitepaper](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-workloads-on-aws.html) — RTO/RPO tiers explained
+- [Google SRE Book — Data Integrity](https://sre.google/sre-book/data-integrity/) — backup theory done right
+- [PostgreSQL backup docs](https://www.postgresql.org/docs/current/backup.html) — version-current
+- [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) — immutable backup primitive
 
 ## Key Takeaways
 
