@@ -2,157 +2,148 @@
 import "../styles/global.css";
 import { getCollection } from "astro:content";
 import Footer from "../components/Footer.astro";
+import Logo from "../components/Logo.astro";
 
-const chapters = (await getCollection("chapters")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
+// Collections we have any content in
+const collections = [
+  "chapters",
+  "dsa",
+  "networking",
+  "db-internals",
+  "devops",
+  "api-design",
+  "frontend",
+  "golang",
+  "sre",
+  "linux-vps",
+  "web-server",
+  "tls-certs",
+  "graphql",
+  "grpc",
+  "websockets",
+  "webhooks",
+] as const;
+
+const all = await Promise.all(collections.map((c) => getCollection(c as any)));
+const counts: Record<string, number> = {};
+collections.forEach((name, i) => (counts[name] = all[i].length));
+
+const chaptersByCollection = (name: string) => counts[name] ?? 0;
+
+// total chapters across tracks (excluding chapter==0 roadmaps)
+const totalChapters = all.reduce(
+  (sum, items) => sum + items.filter((it: any) => it.data.chapter > 0).length,
+  0,
 );
 
-// Group by topic (for now just system design, but extensible)
-const dsaChapters = (await getCollection("dsa")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const networkingChapters = (await getCollection("networking")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const dbChapters = (await getCollection("db-internals")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const devopsChapters = (await getCollection("devops")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const apiDesignChapters = (await getCollection("api-design")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const frontendChapters = (await getCollection("frontend")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const golangChapters = (await getCollection("golang")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
-
-const sreChapters = (await getCollection("sre")).sort(
-  (a, b) => a.data.chapter - b.data.chapter
-);
+// rough reading time: each chapter is ~12 min average
+const totalMinutes = totalChapters * 12;
+const totalHours = Math.round(totalMinutes / 60);
 
 const topics = [
   {
     slug: "system-design",
     title: "System Design",
     desc: "From client-server basics to distributed systems at scale. Includes 7 case studies, 2 step-by-step tutorials, and real code in TypeScript and Go.",
-    chapters: chapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`,
+    chapters: chaptersByCollection("chapters"),
     href: "/topics/system-design/",
   },
   {
     slug: "dsa",
     title: "Data Structures & Algorithms",
     desc: "Patterns that show up in real codebases, not leetcode puzzles. Arrays, trees, graphs, DP — with working TypeScript code.",
-    chapters: dsaChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    chapters: chaptersByCollection("dsa"),
     href: "/topics/dsa/",
   },
   {
     slug: "networking",
     title: "Networking Fundamentals",
     desc: "DNS, TCP/IP, TLS, HTTP/2, WebSockets — how the internet actually works.",
-    chapters: networkingChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+    chapters: chaptersByCollection("networking"),
     href: "/topics/networking/",
   },
   {
     slug: "db-internals",
     title: "Database Internals",
     desc: "B-trees, WAL, MVCC, query planning — what happens under the hood.",
-    chapters: dbChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+    chapters: chaptersByCollection("db-internals"),
     href: "/topics/db-internals/",
   },
   {
     slug: "devops",
     title: "DevOps & Infrastructure",
     desc: "Docker, Kubernetes, CI/CD, IaC — shipping code to production.",
-    chapters: devopsChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+    chapters: chaptersByCollection("devops"),
     href: "/topics/devops/",
   },
   {
     slug: "api-design",
     title: "API Design",
     desc: "REST best practices, GraphQL, gRPC, versioning, pagination, and rate limiting.",
-    chapters: apiDesignChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0118 0"/><path d="M4 14a9 9 0 0018 0"/><line x1="12" y1="11" x2="12" y2="14"/></svg>`,
+    chapters: chaptersByCollection("api-design"),
     href: "/topics/api-design/",
   },
   {
     slug: "frontend",
     title: "Frontend Architecture",
     desc: "Rendering patterns (SSR/SSG/ISR), state management, performance, and accessibility.",
-    chapters: frontendChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`,
+    chapters: chaptersByCollection("frontend"),
     href: "/topics/frontend/",
   },
   {
     slug: "golang",
     title: "Go (Golang)",
     desc: "From zero to production Go — types, concurrency, error handling, and patterns used at Google, Uber, and Cloudflare.",
-    chapters: golangChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    chapters: chaptersByCollection("golang"),
     href: "/topics/golang/",
   },
   {
     slug: "sre",
     title: "Site Reliability Engineering",
     desc: "SLOs, error budgets, on-call, postmortems, chaos, and disaster recovery — keeping production alive at scale.",
-    chapters: sreChapters.length,
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+    chapters: chaptersByCollection("sre"),
     href: "/topics/sre/",
   },
 ];
 
 const pathCore = [
-  { n: 1, title: "Linux & VPS basics", desc: "Processes, sockets, systemd, iptables. Rent a VPS, ssh in.", href: "/topics/linux-vps/" },
-  { n: 2, title: "Networking essentials", desc: "TCP/UDP, DNS, HTTP from raw socket.", href: "/topics/networking/" },
-  { n: 3, title: "Web server fundamentals", desc: "Build minimal HTTP server. Then nginx reverse proxy.", href: "/topics/web-server/" },
-  { n: 4, title: "TLS & certs", desc: "Self-sign, then Let's Encrypt with certbot. No managed services.", href: "/topics/tls-certs/" },
-  { n: 5, title: "REST API building", desc: "Routing, verbs, status codes, validation, errors, pagination, idempotency.", href: "/topics/api-design/" },
-  { n: 6, title: "GraphQL building", desc: "Schema, resolvers, N+1, dataloader. Self-host.", href: "/topics/graphql/" },
-  { n: 7, title: "gRPC building", desc: "Proto, codegen, unary + streaming.", href: "/topics/grpc/" },
-  { n: 8, title: "WebSockets & realtime", desc: "Long-poll → SSE → WS. Build a chat.", href: "/topics/websockets/" },
-  { n: 9, title: "Webhooks", desc: "Sign, verify, retry, replay protect.", href: "/topics/webhooks/" },
-  { n: 10, title: "Data modeling", desc: "Schema, normalization, ER, keys, constraints.", href: "/topics/data-modeling/" },
-  { n: 11, title: "Databases self-hosted", desc: "Install Postgres on VPS. Transactions, indexes, EXPLAIN.", href: "/topics/db-internals/" },
-  { n: 12, title: "Auth & security", desc: "Sessions, argon2, OAuth flows, CSRF, rate limit by hand.", href: "/topics/auth-security/" },
-  { n: 13, title: "API gateway", desc: "Own one with nginx/Kong/Envoy. Auth, rate limit, route.", href: "/topics/api-gateway/" },
-  { n: 14, title: "Caching", desc: "In-process LRU first. Self-host Redis. Eviction, invalidation, stampede.", href: "/topics/caching/" },
-  { n: 15, title: "Background jobs", desc: "Worker loop + Postgres/Redis queue. Retry, DLQ, idempotency.", href: "/topics/background-jobs/" },
-  { n: 16, title: "Messaging & queues", desc: "Self-host RabbitMQ/NATS. Then Kafka cluster on 3 VPS.", href: "/topics/messaging/" },
-  { n: 17, title: "Event-driven & streaming", desc: "Pub/sub, CDC with Debezium, event sourcing.", href: "/topics/event-driven/" },
-  { n: 18, title: "File & object storage", desc: "Local disk → NFS → self-host MinIO. CDN via nginx + Varnish.", href: "/topics/storage/" },
-  { n: 19, title: "Search", desc: "Inverted index from scratch. Then self-host Meilisearch/Elastic.", href: "/topics/search/" },
-  { n: 20, title: "Load balancing", desc: "HAProxy/nginx. L4 vs L7, health checks, sticky sessions.", href: "/topics/load-balancing/" },
-  { n: 21, title: "Horizontal scaling", desc: "Multiple app VPS behind LB. Stateless app, shared session store.", href: "/topics/horizontal-scaling/" },
-  { n: 22, title: "Replication & sharding", desc: "Postgres streaming replica by hand. Manual shard routing.", href: "/topics/replication-sharding/" },
-  { n: 23, title: "Observability", desc: "Logs (journald), Prometheus + Grafana, Jaeger/OTel traces. Self-hosted.", href: "/topics/observability/" },
+  { n: 1, title: "Linux & VPS basics", desc: "Processes, sockets, systemd, iptables. Rent a VPS, ssh in.", href: "/topics/linux-vps/", done: true },
+  { n: 2, title: "Networking essentials", desc: "TCP/UDP, DNS, HTTP from raw socket.", href: "/topics/networking/", done: true },
+  { n: 3, title: "Web server fundamentals", desc: "Build minimal HTTP server. Then nginx reverse proxy.", href: "/topics/web-server/", done: true },
+  { n: 4, title: "TLS & certs", desc: "Self-sign, then Let's Encrypt with certbot. No managed services.", href: "/topics/tls-certs/", done: true },
+  { n: 5, title: "REST API building", desc: "Routing, verbs, status codes, validation, errors, pagination, idempotency.", href: "/topics/api-design/", done: true },
+  { n: 6, title: "GraphQL building", desc: "Schema, resolvers, N+1, dataloader. Self-host.", href: "/topics/graphql/", done: true },
+  { n: 7, title: "gRPC building", desc: "Proto, codegen, unary + streaming.", href: "/topics/grpc/", done: true },
+  { n: 8, title: "WebSockets & realtime", desc: "Long-poll → SSE → WS. Build a chat.", href: "/topics/websockets/", done: true },
+  { n: 9, title: "Webhooks", desc: "Sign, verify, retry, replay protect.", href: "/topics/webhooks/", done: true },
+  { n: 10, title: "Data modeling", desc: "Schema, normalization, ER, keys, constraints.", href: "/topics/data-modeling/", done: false },
+  { n: 11, title: "Databases self-hosted", desc: "Install Postgres on VPS. Transactions, indexes, EXPLAIN.", href: "/topics/db-internals/", done: true },
+  { n: 12, title: "Auth & security", desc: "Sessions, argon2, OAuth flows, CSRF, rate limit by hand.", href: "/topics/auth-security/", done: false },
+  { n: 13, title: "API gateway", desc: "Own one with nginx/Kong/Envoy. Auth, rate limit, route.", href: "/topics/api-gateway/", done: false },
+  { n: 14, title: "Caching", desc: "In-process LRU first. Self-host Redis. Eviction, invalidation, stampede.", href: "/topics/caching/", done: false },
+  { n: 15, title: "Background jobs", desc: "Worker loop + Postgres/Redis queue. Retry, DLQ, idempotency.", href: "/topics/background-jobs/", done: false },
+  { n: 16, title: "Messaging & queues", desc: "Self-host RabbitMQ/NATS. Then Kafka cluster on 3 VPS.", href: "/topics/messaging/", done: false },
+  { n: 17, title: "Event-driven & streaming", desc: "Pub/sub, CDC with Debezium, event sourcing.", href: "/topics/event-driven/", done: false },
+  { n: 18, title: "File & object storage", desc: "Local disk → NFS → self-host MinIO. CDN via nginx + Varnish.", href: "/topics/storage/", done: false },
+  { n: 19, title: "Search", desc: "Inverted index from scratch. Then self-host Meilisearch/Elastic.", href: "/topics/search/", done: false },
+  { n: 20, title: "Load balancing", desc: "HAProxy/nginx. L4 vs L7, health checks, sticky sessions.", href: "/topics/load-balancing/", done: false },
+  { n: 21, title: "Horizontal scaling", desc: "Multiple app VPS behind LB. Stateless app, shared session store.", href: "/topics/horizontal-scaling/", done: false },
+  { n: 22, title: "Replication & sharding", desc: "Postgres streaming replica by hand. Manual shard routing.", href: "/topics/replication-sharding/", done: false },
+  { n: 23, title: "Observability", desc: "Logs (journald), Prometheus + Grafana, Jaeger/OTel traces. Self-hosted.", href: "/topics/observability/", done: false },
 ];
 
 const pathSpecialized = [
-  { n: 24, title: "CI/CD", desc: "Git hooks → self-hosted Gitea Actions / Drone. Build, test, deploy.", href: "/topics/devops/" },
-  { n: 25, title: "Containers", desc: "Docker fundamentals, image layers, registry self-host.", href: "/topics/containers/" },
-  { n: 26, title: "Orchestration", desc: "k3s cluster across own VPS. Not EKS/GKE.", href: "/topics/orchestration/" },
-  { n: 27, title: "Infrastructure as Code", desc: "Ansible playbooks → Terraform against own infra.", href: "/topics/iac/" },
-  { n: 28, title: "Testing strategy", desc: "Unit, integration, contract, e2e. Load test with k6/wrk.", href: "/topics/testing/" },
-  { n: 29, title: "Performance engineering", desc: "Profile (pprof, perf), flamegraphs, latency budgets.", href: "/topics/performance/" },
-  { n: 30, title: "SRE practices", desc: "SLO, error budget, on-call, postmortem, runbook.", href: "/topics/sre/" },
-  { n: 31, title: "Disaster recovery", desc: "pg_dump, WAL-G, restore drills, multi-region replica.", href: "/topics/disaster-recovery/" },
-  { n: 32, title: "Capacity & cost", desc: "Bare metal vs VPS vs cloud math. Sizing.", href: "/topics/capacity-cost/" },
-  { n: 33, title: "Microservices", desc: "When to split, gRPC, service discovery (Consul), Envoy/Linkerd.", href: "/topics/microservices/" },
-  { n: 34, title: "Chaos & resilience", desc: "kill -9, pumba, network partition tests.", href: "/topics/chaos-resilience/" },
+  { n: 24, title: "CI/CD", desc: "Git hooks → self-hosted Gitea Actions / Drone. Build, test, deploy.", href: "/topics/devops/", done: true },
+  { n: 25, title: "Containers", desc: "Docker fundamentals, image layers, registry self-host.", href: "/topics/containers/", done: false },
+  { n: 26, title: "Orchestration", desc: "k3s cluster across own VPS. Not EKS/GKE.", href: "/topics/orchestration/", done: false },
+  { n: 27, title: "Infrastructure as Code", desc: "Ansible playbooks → Terraform against own infra.", href: "/topics/iac/", done: false },
+  { n: 28, title: "Testing strategy", desc: "Unit, integration, contract, e2e. Load test with k6/wrk.", href: "/topics/testing/", done: false },
+  { n: 29, title: "Performance engineering", desc: "Profile (pprof, perf), flamegraphs, latency budgets.", href: "/topics/performance/", done: false },
+  { n: 30, title: "SRE practices", desc: "SLO, error budget, on-call, postmortem, runbook.", href: "/topics/sre/", done: true },
+  { n: 31, title: "Disaster recovery", desc: "pg_dump, WAL-G, restore drills, multi-region replica.", href: "/topics/disaster-recovery/", done: false },
+  { n: 32, title: "Capacity & cost", desc: "Bare metal vs VPS vs cloud math. Sizing.", href: "/topics/capacity-cost/", done: false },
+  { n: 33, title: "Microservices", desc: "When to split, gRPC, service discovery (Consul), Envoy/Linkerd.", href: "/topics/microservices/", done: false },
+  { n: 34, title: "Chaos & resilience", desc: "kill -9, pumba, network partition tests.", href: "/topics/chaos-resilience/", done: false },
 ];
 
 const pathGroups = [
@@ -168,42 +159,17 @@ const pathGroups = [
   },
 ];
 
+const totalSteps = pathCore.length + pathSpecialized.length;
+const doneSteps = [...pathCore, ...pathSpecialized].filter((s) => s.done).length;
+
 const upcoming = [
-  {
-    title: "Operating Systems",
-    desc: "Processes, threads, memory management, file systems, and syscalls — how your code actually runs.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>`,
-  },
-  {
-    title: "Security & Cryptography",
-    desc: "Auth patterns, OAuth, JWT, encryption, and common vulnerabilities — building secure systems.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
-  },
-  {
-    title: "Distributed Systems",
-    desc: "CAP theorem, consensus (Raft/Paxos), CRDTs, vector clocks, and gossip protocols.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="12" y1="10" x2="5" y2="8"/><line x1="12" y1="10" x2="19" y2="8"/><line x1="12" y1="14" x2="5" y2="16"/><line x1="12" y1="14" x2="19" y2="16"/></svg>`,
-  },
-  {
-    title: "Compiler Design",
-    desc: "Lexing, parsing, ASTs, type checking, and code generation — how languages work.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>`,
-  },
-  {
-    title: "Machine Learning Fundamentals",
-    desc: "Linear algebra, gradient descent, neural nets, and transformers — for engineers, not researchers.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 4 18 3-9h4"/><circle cx="18" cy="12" r="2"/></svg>`,
-  },
-  {
-    title: "System Design Interview",
-    desc: "Structured approach to open-ended design questions with worked examples.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
-  },
-  {
-    title: "Software Architecture Patterns",
-    desc: "Monolith vs microservices, event-driven, hexagonal, CQRS — choosing the right architecture.",
-    icon: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`,
-  },
+  { title: "Operating Systems", desc: "Processes, threads, memory management, file systems, and syscalls — how your code actually runs." },
+  { title: "Security & Cryptography", desc: "Auth patterns, OAuth, JWT, encryption, and common vulnerabilities — building secure systems." },
+  { title: "Distributed Systems", desc: "CAP theorem, consensus (Raft/Paxos), CRDTs, vector clocks, and gossip protocols." },
+  { title: "Compiler Design", desc: "Lexing, parsing, ASTs, type checking, and code generation — how languages work." },
+  { title: "Machine Learning Fundamentals", desc: "Linear algebra, gradient descent, neural nets, and transformers — for engineers, not researchers." },
+  { title: "System Design Interview", desc: "Structured approach to open-ended design questions with worked examples." },
+  { title: "Software Architecture Patterns", desc: "Monolith vs microservices, event-driven, hexagonal, CQRS — choosing the right architecture." },
 ];
 ---
 
@@ -221,57 +187,102 @@ const upcoming = [
     />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23fafafa'/><path d='M8 10h16M8 16h12M8 22h8' stroke='%2309090b' stroke-width='2.5' stroke-linecap='round'/></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f1415'/><line x1='12' y1='9' x2='20' y2='9' stroke='%23a3e635' stroke-width='3' stroke-linecap='round'/><line x1='9' y1='16' x2='23' y2='16' stroke='%23a3e635' stroke-width='3' stroke-linecap='round'/><line x1='6' y1='23' x2='26' y2='23' stroke='%23a3e635' stroke-width='3' stroke-linecap='round'/></svg>"
     />
   </head>
   <body>
 
     <!-- Nav -->
     <nav class="landing-nav">
-      <a href="/" class="nav-logo">Unfold</a>
+      <Logo size={22} />
+      <div class="nav-right">
+        <a href="#path" class="nav-link">Path</a>
+        <a href="#topics" class="nav-link">Topics</a>
+      </div>
     </nav>
 
     <!-- Hero -->
     <section class="hero">
       <div class="hero-inner">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span>Self-hosted backend, end to end</span>
+        </div>
         <h1 class="hero-title">
-          Complex topics,<br/>explained simply.
+          Hard things,<br/>
+          <span class="hero-accent">unfolded</span>.
         </h1>
         <p class="hero-desc">
-          Unfold takes hard engineering concepts and breaks them into clear,
-          step-by-step explanations with real code you can run.
-          Pick a topic and start learning.
+          A long-form engineering library. Real code, vendor-neutral, no hand-waving. Pick a topic and read end to end — or follow the Backend Engineering Path step by step.
         </p>
+
+        <div class="scope-strip">
+          <a href="#path" class="scope-pill">
+            <span class="scope-num">{totalSteps}</span>
+            <span class="scope-label">step path</span>
+          </a>
+          <span class="scope-sep"></span>
+          <a href="#topics" class="scope-pill">
+            <span class="scope-num">{topics.length}</span>
+            <span class="scope-label">topics</span>
+          </a>
+          <span class="scope-sep"></span>
+          <a href="#topics" class="scope-pill">
+            <span class="scope-num">{totalChapters}</span>
+            <span class="scope-label">chapters</span>
+          </a>
+          <span class="scope-sep"></span>
+          <a href="#topics" class="scope-pill">
+            <span class="scope-num">~{totalHours}h</span>
+            <span class="scope-label">reading</span>
+          </a>
+        </div>
       </div>
     </section>
 
     <!-- Backend Engineering Path -->
-    <section class="path-section">
+    <section id="path" class="path-section">
       <div class="path-inner">
-        <div class="section-header">
-          <span class="section-label">Backend engineering path</span>
-        </div>
-        <p class="path-intro">
-          Step-by-step. Self-hosted. No managed cloud — you run every piece on a VPS so you understand it.
-        </p>
+        <header class="section-head">
+          <span class="section-eyebrow">Backend engineering path</span>
+          <h2 class="section-title">{totalSteps} steps. No managed cloud.</h2>
+          <p class="section-desc">
+            You run every piece on a VPS so you understand it. {doneSteps} of {totalSteps} steps have full content. The rest land one by one.
+          </p>
+        </header>
 
-        {pathGroups.map((group) => (
+        {pathGroups.map((group, gi) => (
           <div class="path-group">
-            <div class="path-group-header">
-              <span class="path-group-label">{group.label}</span>
+            <div class="path-group-head">
+              <span class="path-group-num">{gi + 1}</span>
+              <div class="path-group-text">
+                <span class="path-group-label">{group.label}</span>
+                <span class="path-group-blurb">{group.blurb}</span>
+              </div>
               <span class="path-group-count">{group.steps.length} steps</span>
             </div>
-            <p class="path-group-blurb">{group.blurb}</p>
-            <ol class="path-list path-list-grid">
+            <ol class="track">
               {group.steps.map((step) => (
-                <li class="path-step">
-                  <a href={step.href} class="path-link">
-                    <span class="path-num">{String(step.n).padStart(2, "0")}</span>
-                    <span class="path-info">
-                      <span class="path-title">{step.title}</span>
-                      <span class="path-desc">{step.desc}</span>
+                <li class={`track-item${step.done ? " done" : ""}`}>
+                  <a href={step.href} class="track-link">
+                    <span class="track-dot" aria-hidden="true">
+                      {step.done && (
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                      )}
                     </span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="path-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <span class="track-num">{String(step.n).padStart(2, "0")}</span>
+                    <span class="track-info">
+                      <span class="track-title">{step.title}</span>
+                      <span class="track-desc">{step.desc}</span>
+                    </span>
+                    <span class="track-status">
+                      {step.done ? (
+                        <span class="status-pill status-done">Read</span>
+                      ) : (
+                        <span class="status-pill status-soon">Soon</span>
+                      )}
+                    </span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="track-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </a>
                 </li>
               ))}
@@ -282,22 +293,25 @@ const upcoming = [
     </section>
 
     <!-- Available Topics -->
-    <section class="topics">
+    <section id="topics" class="topics">
       <div class="topics-inner">
-        <div class="section-header">
-          <span class="section-label">Available</span>
-        </div>
+        <header class="section-head">
+          <span class="section-eyebrow">Topics</span>
+          <h2 class="section-title">{topics.length} libraries to read end to end</h2>
+          <p class="section-desc">
+            Each topic is a self-contained track of chapters. Read in order or jump to what you need.
+          </p>
+        </header>
 
         <div class="topics-grid">
           {topics.map((topic) => (
             <a href={topic.href} class="topic-card">
-              <div class="topic-icon" set:html={topic.icon} />
               <div class="topic-info">
                 <span class="topic-title">{topic.title}</span>
                 <span class="topic-desc">{topic.desc}</span>
               </div>
               <div class="topic-meta">
-                <span class="topic-count">{topic.chapters} chapters</span>
+                <span class="topic-count">{topic.chapters} ch</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="topic-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </div>
             </a>
@@ -306,13 +320,12 @@ const upcoming = [
 
         {upcoming.length > 0 && (
           <Fragment>
-            <div class="section-header coming-soon-header">
-              <span class="section-label">Coming soon</span>
-            </div>
+            <header class="section-head section-head-sub">
+              <span class="section-eyebrow">Coming soon</span>
+            </header>
             <div class="topics-grid">
               {upcoming.map((topic) => (
                 <div class="topic-card topic-card-disabled">
-                  <div class="topic-icon" set:html={topic.icon} />
                   <div class="topic-info">
                     <span class="topic-title">{topic.title}</span>
                     <span class="topic-desc">{topic.desc}</span>
@@ -350,72 +363,381 @@ const upcoming = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
-    max-width: 640px;
+    padding: 18px 32px;
+    max-width: 1180px;
     margin: 0 auto;
   }
-
-  .nav-logo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #fafafa;
+  .nav-right { display: flex; align-items: center; gap: 18px; }
+  .nav-link {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #71717a;
     text-decoration: none;
-    letter-spacing: -0.04em;
+    transition: color 0.15s;
+    letter-spacing: -0.01em;
   }
+  .nav-link:hover { color: #fafafa; }
+
+  @media (max-width: 640px) { .landing-nav { padding: 14px 18px; } }
 
   /* Hero */
   .hero {
-    padding: 72px 24px 56px;
-    text-align: center;
+    padding: 72px 32px 80px;
+    position: relative;
+    overflow: hidden;
   }
-
-  @media (max-width: 640px) {
-    .hero { padding: 48px 16px 36px; }
+  .hero::before {
+    /* faint grid background */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(163, 230, 53, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(163, 230, 53, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, black 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, black 30%, transparent 80%);
+    pointer-events: none;
   }
+  @media (max-width: 640px) { .hero { padding: 48px 18px 60px; } }
 
   .hero-inner {
-    max-width: 520px;
+    max-width: 920px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px 5px 10px;
+    background: rgba(163, 230, 53, 0.08);
+    border: 1px solid rgba(163, 230, 53, 0.18);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #a3e635;
+    margin-bottom: 28px;
+    font-family: "Geist Mono", monospace;
+    letter-spacing: -0.005em;
+  }
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    background: #a3e635;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #a3e635;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
 
   .hero-title {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.045em;
+    font-size: clamp(2.5rem, 7vw, 4.75rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
     color: #fafafa;
-    margin: 0 0 20px;
+    margin: 0 0 24px;
   }
-
-  @media (max-width: 640px) {
-    .hero-title { font-size: 2rem; }
+  .hero-accent {
+    color: #a3e635;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -0.045em;
   }
 
   .hero-desc {
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
+    color: #a1a1aa;
+    line-height: 1.65;
+    margin: 0 0 36px;
+    max-width: 600px;
+  }
+  @media (max-width: 640px) { .hero-desc { font-size: 1rem; } }
+
+  /* Scope strip */
+  .scope-strip {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 4px;
+    background: #16161a;
+    border: 1px solid #27272a;
+    border-radius: 14px;
+    flex-wrap: wrap;
+  }
+  .scope-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .scope-pill:hover { background: #1f1f23; }
+  .scope-num {
+    font-family: "Geist Mono", monospace;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fafafa;
+    letter-spacing: -0.04em;
+  }
+  .scope-label {
+    font-size: 0.75rem;
     color: #71717a;
-    line-height: 1.7;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .scope-sep {
+    width: 1px;
+    background: #27272a;
+    align-self: stretch;
+    margin: 8px 0;
+  }
+  @media (max-width: 640px) {
+    .scope-strip { display: flex; }
+    .scope-num { font-size: 1rem; }
+  }
+
+  /* Section heads */
+  .section-head {
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+  .section-head-sub {
+    margin-top: 56px;
+    margin-bottom: 16px;
+  }
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a3e635;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    font-family: "Geist Mono", monospace;
+  }
+  .section-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    color: #fafafa;
+    letter-spacing: -0.03em;
+    margin: 0 0 12px;
+    line-height: 1.15;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: #a1a1aa;
+    line-height: 1.6;
     margin: 0;
-    max-width: 440px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
-  @media (max-width: 640px) {
-    .hero-desc { font-size: 0.9375rem; }
+  /* PATH — vertical track */
+  .path-section {
+    padding: 32px 32px 72px;
+  }
+  @media (max-width: 640px) { .path-section { padding: 24px 18px 56px; } }
+  .path-inner {
+    max-width: 1180px;
+    margin: 0 auto;
   }
 
-  /* Topics */
+  .path-group {
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .path-group:last-child { margin-bottom: 0; }
+
+  .path-group-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0 22px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #1f1f23;
+  }
+  .path-group-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(163, 230, 53, 0.1);
+    border: 1px solid rgba(163, 230, 53, 0.3);
+    color: #a3e635;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Geist Mono", monospace;
+    font-size: 0.875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .path-group-text { flex: 1; min-width: 0; }
+  .path-group-label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fafafa;
+    letter-spacing: -0.02em;
+  }
+  .path-group-blurb {
+    display: block;
+    font-size: 0.8125rem;
+    color: #71717a;
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .path-group-count {
+    font-family: "Geist Mono", monospace;
+    font-size: 0.75rem;
+    color: #52525b;
+    flex-shrink: 0;
+  }
+
+  /* Track */
+  .track {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+  /* connecting vertical line */
+  .track::before {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(to bottom,
+      transparent,
+      #27272a 12px,
+      #27272a calc(100% - 12px),
+      transparent);
+  }
+
+  .track-item { position: relative; }
+
+  .track-link {
+    display: grid;
+    grid-template-columns: 36px 36px 1fr auto auto;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s;
+  }
+  .track-link:hover { background: #16161a; }
+  .track-link:hover .track-arrow { transform: translateX(3px); color: #a3e635; }
+  .track-link:hover .track-title { color: #fafafa; }
+  .track-link:hover .track-dot {
+    border-color: #a3e635;
+    background: #0f1415;
+  }
+
+  .track-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #27272a;
+    background: #0f1415;
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f1415;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+  }
+  .done .track-dot {
+    background: #a3e635;
+    border-color: #a3e635;
+  }
+  .done .track-dot svg { color: #0f1415; }
+
+  .track-num {
+    font-family: "Geist Mono", monospace;
+    font-size: 0.75rem;
+    color: #52525b;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    justify-self: start;
+  }
+  .done .track-num { color: #a3e635; }
+
+  .track-info { min-width: 0; }
+  .track-title {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #d4d4d8;
+    letter-spacing: -0.015em;
+    transition: color 0.15s;
+    line-height: 1.3;
+  }
+  .done .track-title { color: #fafafa; }
+  .track-desc {
+    display: block;
+    font-size: 0.8125rem;
+    color: #71717a;
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .track-status { flex-shrink: 0; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-family: "Geist Mono", monospace;
+    letter-spacing: 0.02em;
+  }
+  .status-done {
+    background: rgba(163, 230, 53, 0.1);
+    color: #a3e635;
+    border: 1px solid rgba(163, 230, 53, 0.25);
+  }
+  .status-soon {
+    background: #18181b;
+    color: #52525b;
+    border: 1px solid #27272a;
+  }
+
+  .track-arrow {
+    color: #3f3f46;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 720px) {
+    .track-link {
+      grid-template-columns: 28px 28px 1fr auto;
+    }
+    .track-arrow { display: none; }
+    .track-desc { display: none; }
+    .track::before { left: 14px; }
+  }
+
+  /* TOPICS */
   .topics {
-    padding: 0 32px 80px;
+    padding: 0 32px 96px;
   }
-
-  @media (max-width: 640px) {
-    .topics { padding: 0 16px 56px; }
-  }
-
+  @media (max-width: 640px) { .topics { padding: 0 18px 72px; } }
   .topics-inner {
-    max-width: 1080px;
+    max-width: 1180px;
     margin: 0 auto;
   }
 
@@ -424,324 +746,92 @@ const upcoming = [
     grid-template-columns: 1fr;
     gap: 8px;
   }
-
-  @media (min-width: 900px) {
-    .topics-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+  @media (min-width: 720px) {
+    .topics-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   }
 
-  .section-header {
-    padding: 0 0 10px;
-  }
-
-  .coming-soon-header {
-    margin-top: 32px;
-  }
-
-  .section-label {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #3f3f46;
-  }
-
-  /* Topic cards */
   .topic-card {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px;
+    padding: 18px 20px;
     border: 1px solid #1f1f23;
     border-radius: 12px;
     text-decoration: none;
     transition: all 0.15s;
-    cursor: pointer;
+    background: #0f1415;
+    position: relative;
+    overflow: hidden;
   }
-
+  .topic-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: #a3e635;
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+  }
   a.topic-card:hover {
     background: #16161a;
     border-color: #27272a;
   }
+  a.topic-card:hover::before { transform: translateX(0); }
+  a.topic-card:hover .topic-arrow { transform: translateX(3px); color: #a3e635; }
+  a.topic-card:hover .topic-title { color: #fafafa; }
 
-  a.topic-card:hover .topic-arrow {
-    transform: translateX(3px);
-    color: #a3e635;
-  }
+  .topic-card-disabled { cursor: default; opacity: 0.45; }
 
-  .topic-card-disabled {
-    cursor: default;
-    opacity: 0.45;
-  }
-
-  .topic-icon {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #16161a;
-    border-radius: 10px;
-    color: #a1a1aa;
-    flex-shrink: 0;
-  }
-
-  a.topic-card:hover .topic-icon {
-    color: #fafafa;
-    background: #1f1f23;
-  }
-
-  .topic-info {
-    flex: 1;
-    min-width: 0;
-  }
-
+  .topic-info { flex: 1; min-width: 0; }
   .topic-title {
     display: block;
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #e4e4e7;
+    color: #d4d4d8;
     letter-spacing: -0.015em;
+    transition: color 0.15s;
   }
-
   .topic-desc {
     display: block;
     font-size: 0.8125rem;
-    color: #52525b;
-    margin-top: 2px;
-    line-height: 1.45;
+    color: #71717a;
+    margin-top: 3px;
+    line-height: 1.5;
   }
-
   @media (max-width: 640px) {
     .topic-desc {
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
     }
   }
 
   .topic-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-shrink: 0;
   }
-
   .topic-count {
     font-size: 0.75rem;
     color: #52525b;
-    font-family: "Dank Mono", "Geist Mono", monospace;
+    font-family: "Geist Mono", monospace;
     white-space: nowrap;
   }
-
-  .topic-arrow {
-    color: #3f3f46;
-    transition: all 0.2s;
-  }
-
-  /* Path */
-  .path-section {
-    padding: 0 32px 72px;
-  }
-
-  @media (max-width: 640px) {
-    .path-section { padding: 0 16px 48px; }
-  }
-
-  .path-inner {
-    max-width: 1080px;
-    margin: 0 auto;
-  }
-
-  .path-list-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  @media (min-width: 900px) {
-    .path-list-grid {
-      grid-template-columns: 1fr 1fr;
-      column-gap: 16px;
-    }
-  }
-
-  .path-intro {
-    font-size: 0.875rem;
-    color: #71717a;
-    line-height: 1.6;
-    margin: 0 0 18px;
-  }
-
-  .path-group {
-    margin-bottom: 36px;
-  }
-
-  .path-group:last-child {
-    margin-bottom: 0;
-  }
-
-  .path-group-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 16px 0 4px;
-  }
-
-  .path-group-label {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    color: #e4e4e7;
-    letter-spacing: -0.01em;
-  }
-
-  .path-group-count {
-    font-size: 0.6875rem;
-    color: #52525b;
-    font-family: "Dank Mono", "Geist Mono", monospace;
-  }
-
-  .path-group-blurb {
-    font-size: 0.8125rem;
-    color: #71717a;
-    line-height: 1.55;
-    margin: 0 0 12px;
-  }
-
-  .path-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-left: 1px solid #1f1f23;
-    padding-left: 0;
-  }
-
-  @media (min-width: 900px) {
-    .path-list-grid {
-      border-left: none;
-    }
-    .path-list-grid .path-step::before {
-      display: none;
-    }
-    .path-list-grid .path-step {
-      margin-left: 0;
-    }
-  }
-
-  .path-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin-left: 8px;
-    position: relative;
-  }
-
-  .path-step::before {
-    content: "";
-    position: absolute;
-    left: -9px;
-    top: 20px;
-    width: 8px;
-    height: 1px;
-    background: #1f1f23;
-  }
-
-  .path-link {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
-    margin: -12px -14px;
-    transition: background 0.15s;
-  }
-
-  .path-link:hover {
-    background: #16161a;
-  }
-
-  .path-link:hover .path-arrow {
-    transform: translateX(3px);
-    color: #a3e635;
-  }
-
-  .path-link:hover .path-title {
-    color: #fafafa;
-  }
-
-  .path-num {
-    font-family: "Dank Mono", "Geist Mono", monospace;
-    font-size: 0.75rem;
-    color: #52525b;
-    flex-shrink: 0;
-    padding-top: 2px;
-    min-width: 22px;
-  }
-
-  .path-info {
-    flex: 1;
-    min-width: 0;
-    display: block;
-  }
-
-  .path-title {
-    display: block;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: #e4e4e7;
-    letter-spacing: -0.015em;
-    transition: color 0.15s;
-  }
-
-  .path-desc {
-    display: block;
-    font-size: 0.8125rem;
-    color: #52525b;
-    margin-top: 2px;
-    line-height: 1.5;
-  }
-
-  .path-step-soon .path-title {
-    color: #71717a;
-  }
-
-  .path-arrow {
-    color: #3f3f46;
-    transition: all 0.2s;
-    flex-shrink: 0;
-    margin-top: 4px;
-  }
-
-  .path-soon {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: #52525b;
-    background: #18181b;
-    padding: 2px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+  .topic-arrow { color: #3f3f46; transition: all 0.2s; }
 
   .topic-soon-badge {
     font-size: 0.6875rem;
     font-weight: 600;
     color: #52525b;
     background: #18181b;
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
     letter-spacing: 0.02em;
-    text-transform: uppercase;
+    font-family: "Geist Mono", monospace;
   }
-
 </style>

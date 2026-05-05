@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Sidebar from "../components/Sidebar.astro";
 import Footer from "../components/Footer.astro";
+import Logo from "../components/Logo.astro";
 
 interface Props {
   title: string;
@@ -46,9 +47,7 @@ const { title, showSidebar = true } = Astro.props;
               </svg>
             </button>
           )}
-          <a href="/" class="logo-link">
-            <span class="logo-text">Unfold</span>
-          </a>
+          <Logo size={20} />
         </div>
 
         <nav class="header-breadcrumb" id="breadcrumb"></nav>
@@ -70,6 +69,12 @@ const { title, showSidebar = true } = Astro.props;
           <slot />
         </article>
       </main>
+      {showSidebar && (
+        <aside id="page-toc" class="page-toc" aria-label="On this page">
+          <div class="page-toc-head">On this page</div>
+          <ul id="page-toc-list" class="page-toc-list"></ul>
+        </aside>
+      )}
     </div>
 
     <Footer />
@@ -322,6 +327,61 @@ const { title, showSidebar = true } = Astro.props;
       window.addEventListener("scroll", updateProgress, { passive: true });
       window.addEventListener("resize", updateProgress);
       updateProgress();
+
+      // ===== Right-rail TOC (scrollspy) =====
+      const tocList = document.getElementById("page-toc-list") as HTMLUListElement | null;
+      const tocBox = document.getElementById("page-toc");
+      if (tocList && article) {
+        const headings = Array.from(
+          (article as HTMLElement).querySelectorAll<HTMLElement>("h2"),
+        ).filter((h) => h.textContent && h.textContent.trim().length > 0);
+
+        if (headings.length < 2) {
+          tocBox?.setAttribute("hidden", "");
+        } else {
+          headings.forEach((h) => {
+            if (!h.id) {
+              const slug = (h.textContent || "")
+                .toLowerCase().trim()
+                .replace(/[^\w\s-]/g, "")
+                .replace(/\s+/g, "-")
+                .replace(/-+/g, "-");
+              h.id = slug;
+            }
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = "#" + h.id;
+            a.dataset.targetId = h.id;
+            // strip trailing anchor link text content if present
+            const text = (h.firstChild?.nodeType === Node.TEXT_NODE ? h.firstChild.textContent : h.textContent) || "";
+            a.textContent = text.replace(/#$/, "").trim();
+            li.appendChild(a);
+            tocList.appendChild(li);
+          });
+
+          // scrollspy
+          const links = Array.from(tocList.querySelectorAll<HTMLAnchorElement>("a"));
+          const setActive = (id: string) => {
+            links.forEach((l) => {
+              if (l.dataset.targetId === id) l.classList.add("active");
+              else l.classList.remove("active");
+            });
+          };
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              const visible = entries
+                .filter((e) => e.isIntersecting)
+                .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+              if (visible.length) {
+                setActive((visible[0].target as HTMLElement).id);
+              }
+            },
+            { rootMargin: "-80px 0px -65% 0px", threshold: 0 },
+          );
+          headings.forEach((h) => observer.observe(h));
+        }
+      }
 
       // ===== Anchor links on H2/H3 =====
       function slugify(s: string) {
