@@ -33,6 +33,7 @@
   --color-cyan-dim: #22d3ee15;
   --font-mono: "Dank Mono", "Geist Mono", ui-monospace, monospace;
   --font-sans: "Cabin Condensed", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body: "Lora", "Iowan Old Style", Georgia, serif;
   --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
 }
 
@@ -46,11 +47,10 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  line-height: 1.6;
-  font-feature-settings: "ss01", "ss02", "cv01";
+  line-height: 1.65;
 }
 
 ::selection {
@@ -74,10 +74,11 @@ body {
    =================================== */
 .prose {
   max-width: none;
+  font-family: var(--font-body);
   color: var(--color-text-body);
-  line-height: 1.85;
+  line-height: 1.75;
   font-size: 1.0625rem;
-  letter-spacing: -0.003em;
+  letter-spacing: 0;
 }
 
 .prose h2 {
