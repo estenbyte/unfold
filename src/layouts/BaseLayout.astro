@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import Sidebar from "../components/Sidebar.astro";
-import Footer from "../components/Footer.astro";
 import Logo from "../components/Logo.astro";
 
 interface Props {
@@ -76,8 +75,6 @@ const { title, showSidebar = true } = Astro.props;
         </aside>
       )}
     </div>
-
-    <Footer />
 
     <!-- Keyboard shortcuts hint -->
     <button id="kbd-hint" class="kbd-hint" aria-label="Show keyboard shortcuts">
