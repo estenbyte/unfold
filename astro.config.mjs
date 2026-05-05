@@ -10,10 +10,7 @@ export default defineConfig({
 
   markdown: {
     shikiConfig: {
-      themes: {
-        light: 'night-owl-light',
-        dark: 'night-owl',
-      },
+      theme: 'vesper',
     },
   },
 
