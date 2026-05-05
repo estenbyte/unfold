@@ -181,7 +181,7 @@ const upcoming = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cabin+Condensed:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -310,11 +310,11 @@ const upcoming = [
 
 <style>
   body {
-    font-family: "Lora", "Iowan Old Style", Georgia, serif;
-    background: #11100f;     /* warm soft dark — paper-on-night */
-    color: #ece9e3;          /* warm cream text */
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: #11100f;     /* warm soft dark */
+    color: #ece9e3;
     -webkit-font-smoothing: antialiased;
-    line-height: 1.65;
+    line-height: 1.6;
     margin: 0;
   }
 
@@ -331,12 +331,12 @@ const upcoming = [
   }
   .nav-right { display: flex; align-items: center; gap: 22px; }
   .nav-link {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-size: 1.05rem;
-    font-style: italic;
+    font-size: 0.875rem;
+    font-weight: 500;
     color: #71717a;
     text-decoration: none;
     transition: color 0.2s;
+    letter-spacing: -0.01em;
   }
   .nav-link:hover { color: #ece9e3; }
   @media (max-width: 640px) { .landing-nav { padding: 16px 18px; } }
@@ -354,16 +354,14 @@ const upcoming = [
   }
 
   .hero-title {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-size: clamp(3rem, 8vw, 5.25rem);
-    font-weight: 400;
-    line-height: 0.98;
-    letter-spacing: -0.022em;
+    font-size: clamp(2.75rem, 7.5vw, 5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.045em;
     color: #ece9e3;
     margin: 0 0 28px;
   }
   .hero-accent {
-    font-style: italic;
     color: #a3e635;
   }
 
@@ -379,11 +377,10 @@ const upcoming = [
   @media (max-width: 640px) { .hero-desc { font-size: 1rem; } }
 
   .hero-scope {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-style: italic;
-    font-size: 1.05rem;
+    font-size: 0.875rem;
     color: #8a8580;
     margin: 0;
+    letter-spacing: -0.005em;
   }
   .hero-scope a {
     color: #ece9e3;
@@ -419,13 +416,12 @@ const upcoming = [
     margin-bottom: 16px;
   }
   .section-title {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-size: clamp(1.875rem, 4.5vw, 2.875rem);
-    font-weight: 400;
+    font-size: clamp(1.625rem, 3.5vw, 2.375rem);
+    font-weight: 700;
     color: #ece9e3;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.035em;
     margin: 0 0 14px;
-    line-height: 1.05;
+    line-height: 1.1;
   }
   .section-desc {
     font-size: 1rem;
@@ -465,14 +461,12 @@ const upcoming = [
     margin-bottom: 10px;
   }
   .path-group-label {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-style: italic;
-    font-size: 1.625rem;
-    font-weight: 400;
+    font-size: 1.375rem;
+    font-weight: 650;
     color: #ece9e3;
     margin: 0 0 8px;
-    letter-spacing: -0.005em;
-    line-height: 1.15;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
   }
   .path-group-blurb {
     font-size: 0.9375rem;
@@ -509,22 +503,22 @@ const upcoming = [
   .toc-link-static { cursor: default; }
 
   .toc-num {
-    font-family: "Instrument Serif", Georgia, serif;
-    font-style: italic;
-    font-size: 1.05rem;
+    font-family: "Geist Mono", monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: #6e6962;
     text-align: right;
     transition: color 0.18s;
+    letter-spacing: -0.02em;
   }
   .toc-info { min-width: 0; }
   .toc-title {
     display: block;
-    font-family: "Instrument Serif", Georgia, serif;
-    font-size: 1.25rem;
-    font-weight: 400;
+    font-size: 0.9375rem;
+    font-weight: 600;
     color: #ece9e3;
-    letter-spacing: -0.005em;
-    line-height: 1.25;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
     transition: color 0.18s;
   }
   .toc-desc {
@@ -551,8 +545,6 @@ const upcoming = [
 
   @media (max-width: 640px) {
     .toc-link { grid-template-columns: 28px 1fr auto; column-gap: 14px; }
-    .toc-num { font-size: 0.95rem; }
-    .toc-title { font-size: 1.0625rem; }
     .toc-desc { display: none; }
   }
 
