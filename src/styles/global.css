@@ -784,30 +784,6 @@ body {
 }
 
 /* ===================================
-   Chapter-complete hint above nav
-   =================================== */
-.ch-nav {
-  position: relative;
-}
-.ch-nav::before {
-  content: "✓ chapter complete · keep going";
-  position: absolute;
-  top: -2.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  font-family: var(--font-mono);
-  color: var(--color-green);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: var(--color-green-dim);
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--color-green) 30%, transparent);
-  white-space: nowrap;
-}
-
-/* ===================================
    Right-rail floating TOC
    =================================== */
 .page-toc {
@@ -864,15 +840,6 @@ body {
 }
 .page-toc-list a.active {
   color: var(--color-accent);
-}
-
-/* hide the chapter-complete badge on screens too narrow to fit */
-@media (max-width: 480px) {
-  .ch-nav::before {
-    font-size: 0.625rem;
-    padding: 3px 8px;
-    top: -1.85rem;
-  }
 }
 
 /* ===================================
