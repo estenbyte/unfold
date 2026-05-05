@@ -11,6 +11,7 @@
 /* Default: dark — warm paper-on-night, no pure black */
 :root,
 :root[data-theme="dark"] {
+  --color-bg-glass: rgba(17, 16, 15, 0.85);
   --color-bg-primary: #11100f;
   --color-bg-secondary: #181613;
   --color-bg-card: #1d1a16;
@@ -44,6 +45,7 @@
 
 /* Light: warm cream paper, deep olive-lime accent for contrast */
 :root[data-theme="light"] {
+  --color-bg-glass: rgba(253, 250, 243, 0.85);
   --color-bg-primary: #fdfaf3;
   --color-bg-secondary: #f5f0e6;
   --color-bg-card: #ffffff;
