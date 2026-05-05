@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- Warm soft dark — paper-on-night (no pure black) --- */
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-serif: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* ----------- Theme tokens ----------- */
+/* Default: dark — warm paper-on-night, no pure black */
+:root,
+:root[data-theme="dark"] {
   --color-bg-primary: #11100f;
   --color-bg-secondary: #181613;
   --color-bg-card: #1d1a16;
@@ -12,29 +21,57 @@
   --color-border-subtle: #221e19;
   --color-border-active: #a3e635;
   --color-text-primary: #ece9e3;
-  --color-text-body: #d8d3ca;       /* long-form reading — warm cream */
-  --color-text-secondary: #b8b3aa;  /* UI subtext, descriptions */
-  --color-text-muted: #6e6962;      /* meta info, list markers */
+  --color-text-body: #d8d3ca;
+  --color-text-secondary: #b8b3aa;
+  --color-text-muted: #6e6962;
   --color-accent: #a3e635;
   --color-accent-hover: #bef264;
-  --color-accent-dim: #a3e63515;
+  --color-accent-dim: rgba(163, 230, 53, 0.10);
   --color-lime: #a3e635;
   --color-green: #34d399;
-  --color-green-dim: #34d39915;
+  --color-green-dim: rgba(52, 211, 153, 0.10);
   --color-yellow: #fbbf24;
-  --color-yellow-dim: #fbbf2415;
+  --color-yellow-dim: rgba(251, 191, 36, 0.10);
   --color-red: #f87171;
-  --color-red-dim: #f8717115;
+  --color-red-dim: rgba(248, 113, 113, 0.10);
   --color-purple: #c084fc;
-  --color-purple-dim: #c084fc15;
+  --color-purple-dim: rgba(192, 132, 252, 0.10);
   --color-orange: #fb923c;
-  --color-orange-dim: #fb923c15;
+  --color-orange-dim: rgba(251, 146, 60, 0.10);
   --color-cyan: #22d3ee;
-  --color-cyan-dim: #22d3ee15;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
-  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-body: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-serif: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --color-cyan-dim: rgba(34, 211, 238, 0.10);
+}
+
+/* Light: warm cream paper, deep olive-lime accent for contrast */
+:root[data-theme="light"] {
+  --color-bg-primary: #fdfaf3;
+  --color-bg-secondary: #f5f0e6;
+  --color-bg-card: #ffffff;
+  --color-bg-code: #f1ebde;
+  --color-bg-hover: #ece6d8;
+  --color-bg-elevated: #e8e2d0;
+  --color-border: #d8d2c4;
+  --color-border-subtle: #ebe6da;
+  --color-border-active: #4d7c0f;
+  --color-text-primary: #1a1814;
+  --color-text-body: #2d2922;
+  --color-text-secondary: #56524a;
+  --color-text-muted: #8a8580;
+  --color-accent: #4d7c0f;
+  --color-accent-hover: #3f6212;
+  --color-accent-dim: rgba(77, 124, 15, 0.08);
+  --color-green: #16a34a;
+  --color-green-dim: rgba(22, 163, 74, 0.08);
+  --color-yellow: #b45309;
+  --color-yellow-dim: rgba(180, 83, 9, 0.08);
+  --color-red: #b91c1c;
+  --color-red-dim: rgba(185, 28, 28, 0.08);
+  --color-purple: #7e22ce;
+  --color-purple-dim: rgba(126, 34, 206, 0.08);
+  --color-orange: #c2410c;
+  --color-orange-dim: rgba(194, 65, 12, 0.08);
+  --color-cyan: #0e7490;
+  --color-cyan-dim: rgba(14, 116, 144, 0.08);
 }
 
 /* ===================================
@@ -620,20 +657,10 @@ body {
   left: 0;
   height: 2px;
   width: 0;
-  background: linear-gradient(90deg, var(--color-accent), var(--color-cyan));
+  background: var(--color-accent);
   z-index: 60;
   transition: width 0.08s linear;
   pointer-events: none;
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent);
-}
-.read-progress.done {
-  background: linear-gradient(90deg, var(--color-green), var(--color-accent));
-  animation: progress-finish 1.2s ease-out;
-}
-@keyframes progress-finish {
-  0% { box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent); }
-  50% { box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 90%, transparent); }
-  100% { box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent); }
 }
 
 /* ===================================

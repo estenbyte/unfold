@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { getCollection } from "astro:content";
 import Logo from "../components/Logo.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 
 // Collections we have any content in
 const collections = [
@@ -178,6 +179,17 @@ const upcoming = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unfold — Complex topics, explained simply</title>
     <meta name="description" content="Unfold breaks down complex engineering topics into clear explanations with real, working code. No jargon. No hand-waving." />
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefers = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", saved || prefers);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -197,6 +209,7 @@ const upcoming = [
       <div class="nav-right">
         <a href="#path" class="nav-link">Path</a>
         <a href="#topics" class="nav-link">Topics</a>
+        <ThemeToggle />
       </div>
     </nav>
 
@@ -311,14 +324,15 @@ const upcoming = [
 <style>
   body {
     font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    background: #11100f;     /* warm soft dark */
-    color: #ece9e3;
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
     line-height: 1.6;
     margin: 0;
+    transition: background-color 0.2s, color 0.2s;
   }
 
-  ::selection { background: #a3e635; color: #11100f; }
+  ::selection { background: var(--color-accent); color: var(--color-bg-primary); }
 
   /* Nav */
   .landing-nav {
@@ -333,12 +347,12 @@ const upcoming = [
   .nav-link {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #71717a;
+    color: var(--color-text-muted);
     text-decoration: none;
     transition: color 0.2s;
     letter-spacing: -0.01em;
   }
-  .nav-link:hover { color: #ece9e3; }
+  .nav-link:hover { color: var(--color-text-primary); }
   @media (max-width: 640px) { .landing-nav { padding: 16px 18px; } }
 
   /* Hero — title-page feel */
@@ -358,16 +372,16 @@ const upcoming = [
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.045em;
-    color: #ece9e3;
+    color: var(--color-text-primary);
     margin: 0 0 28px;
   }
   .hero-accent {
-    color: #a3e635;
+    color: var(--color-accent);
   }
 
   .hero-desc {
     font-size: 1.125rem;
-    color: #a8a39a;
+    color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0 0 36px;
     max-width: 540px;
@@ -378,23 +392,23 @@ const upcoming = [
 
   .hero-scope {
     font-size: 0.875rem;
-    color: #8a8580;
+    color: var(--color-text-muted);
     margin: 0;
     letter-spacing: -0.005em;
   }
   .hero-scope a {
-    color: #ece9e3;
+    color: var(--color-text-primary);
     text-decoration: none;
-    border-bottom: 1px dotted #4a463f;
+    border-bottom: 1px dotted var(--color-border);
     transition: border-color 0.2s, color 0.2s;
   }
   .hero-scope a:hover {
-    color: #a3e635;
-    border-bottom-color: #a3e635;
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
   }
   .scope-bullet {
     margin: 0 8px;
-    color: #4a463f;
+    color: var(--color-border);
   }
 
   /* Section heads — book part labels */
@@ -410,7 +424,7 @@ const upcoming = [
     display: block;
     font-size: 0.7rem;
     font-weight: 600;
-    color: #6e6962;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.22em;
     margin-bottom: 16px;
@@ -418,14 +432,14 @@ const upcoming = [
   .section-title {
     font-size: clamp(1.625rem, 3.5vw, 2.375rem);
     font-weight: 700;
-    color: #ece9e3;
+    color: var(--color-text-primary);
     letter-spacing: -0.035em;
     margin: 0 0 14px;
     line-height: 1.1;
   }
   .section-desc {
     font-size: 1rem;
-    color: #8a8580;
+    color: var(--color-text-secondary);
     line-height: 1.7;
     margin: 0;
     max-width: 580px;
@@ -449,13 +463,13 @@ const upcoming = [
   .path-group-head {
     margin-bottom: 16px;
     padding-bottom: 18px;
-    border-bottom: 1px solid #2a2620;
+    border-bottom: 1px solid var(--color-border);
   }
   .path-group-part {
     display: block;
     font-size: 0.7rem;
     font-weight: 600;
-    color: #8a8580;
+    color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.22em;
     margin-bottom: 10px;
@@ -463,14 +477,14 @@ const upcoming = [
   .path-group-label {
     font-size: 1.375rem;
     font-weight: 650;
-    color: #ece9e3;
+    color: var(--color-text-primary);
     margin: 0 0 8px;
     letter-spacing: -0.025em;
     line-height: 1.2;
   }
   .path-group-blurb {
     font-size: 0.9375rem;
-    color: #8a8580;
+    color: var(--color-text-secondary);
     line-height: 1.6;
     margin: 0;
   }
@@ -482,7 +496,7 @@ const upcoming = [
     margin: 0;
   }
   .toc-item {
-    border-bottom: 1px dotted #2a2620;
+    border-bottom: 1px dotted var(--color-border);
   }
   .toc-item:last-child { border-bottom: none; }
 
@@ -496,9 +510,9 @@ const upcoming = [
     color: inherit;
     transition: background 0.18s;
   }
-  a.toc-link:hover { background: #1a1813; }
-  a.toc-link:hover .toc-title { color: #a3e635; }
-  a.toc-link:hover .toc-num { color: #ece9e3; }
+  a.toc-link:hover { background: var(--color-bg-hover); }
+  a.toc-link:hover .toc-title { color: var(--color-accent); }
+  a.toc-link:hover .toc-num { color: var(--color-text-primary); }
 
   .toc-link-static { cursor: default; }
 
@@ -506,7 +520,7 @@ const upcoming = [
     font-family: "Geist Mono", monospace;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #6e6962;
+    color: var(--color-text-muted);
     text-align: right;
     transition: color 0.18s;
     letter-spacing: -0.02em;
@@ -516,7 +530,7 @@ const upcoming = [
     display: block;
     font-size: 0.9375rem;
     font-weight: 600;
-    color: #ece9e3;
+    color: var(--color-text-primary);
     letter-spacing: -0.015em;
     line-height: 1.35;
     transition: color 0.18s;
@@ -524,22 +538,22 @@ const upcoming = [
   .toc-desc {
     display: block;
     font-size: 0.875rem;
-    color: #8a8580;
+    color: var(--color-text-secondary);
     margin-top: 5px;
     line-height: 1.55;
   }
   .toc-mark {
     font-size: 0.7rem;
     font-weight: 600;
-    color: #6e6962;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.18em;
     flex-shrink: 0;
     align-self: center;
     white-space: nowrap;
   }
-  .toc-item.done .toc-mark { color: #a3e635; }
-  .toc-soon .toc-mark { color: #4a463f; }
+  .toc-item.done .toc-mark { color: var(--color-accent); }
+  .toc-soon .toc-mark { color: var(--color-border); }
   .toc-soon .toc-title,
   .toc-soon .toc-desc { opacity: 0.55; }
 
