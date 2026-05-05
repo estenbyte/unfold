@@ -208,6 +208,16 @@ body {
   letter-spacing: 0;
 }
 
+/* Shiki dual-theme: switch token colors via active data-theme. */
+:root[data-theme="light"] .astro-code,
+:root[data-theme="light"] .astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
 .prose pre code {
   background: none;
   border: none;
