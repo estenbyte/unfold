@@ -790,29 +790,194 @@ body {
 }
 
 /* ===================================
-   Chapter title override (book feel)
+   Book-feel overrides for topic + chapter routes
+   The per-route .astro files have their own scoped CSS; these
+   unscoped rules use !important to defeat that specificity, so
+   we don't have to edit 60+ slug routes.
    =================================== */
+
+/* Chapter title (chapter pages) */
 .ch-title {
   font-family: var(--font-serif) !important;
   font-weight: 400 !important;
   letter-spacing: -0.012em !important;
   line-height: 1.05 !important;
+  font-size: 2.5rem !important;
 }
 .ch-subtitle {
   font-family: var(--font-serif) !important;
   font-style: italic !important;
   font-weight: 400 !important;
-  font-size: 1.15rem !important;
+  font-size: 1.2rem !important;
   color: var(--color-text-secondary) !important;
   line-height: 1.5 !important;
+  letter-spacing: -0.003em !important;
 }
 
-/* Topic landing page titles */
+/* Chapter meta line — quieter, all small caps */
+.ch-meta {
+  gap: 14px !important;
+}
+.ch-meta-item {
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: var(--color-text-muted) !important;
+}
+.ch-meta-sep {
+  background: var(--color-border) !important;
+  opacity: 0.5;
+}
+.back-link {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  font-size: 0.95rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 400 !important;
+}
+
+/* Chapter prev/next nav — strip the boxed card look */
+.ch-nav {
+  border-top: 1px solid var(--color-border-subtle) !important;
+  padding-top: 2.5rem !important;
+  margin-top: 4rem !important;
+}
+.ch-nav-link {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 8px 0 !important;
+  max-width: 50% !important;
+}
+.ch-nav-link:hover {
+  background: transparent !important;
+}
+.ch-nav-link:hover .ch-nav-title {
+  color: var(--color-accent) !important;
+}
+.ch-nav-label {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  font-size: 0.85rem !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--color-text-muted) !important;
+  font-weight: 400 !important;
+  margin-bottom: 4px !important;
+}
+.ch-nav-title {
+  font-family: var(--font-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.005em !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  max-width: none !important;
+  line-height: 1.3 !important;
+  transition: color 0.15s !important;
+}
+
+/* ============= Topic landing pages ============= */
+
+/* Topic title (h1) */
 .topic-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif) !important;
   font-weight: 400 !important;
   letter-spacing: -0.012em !important;
   line-height: 1.05 !important;
+}
+.topic-desc {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 1.2rem !important;
+  color: var(--color-text-secondary) !important;
+  line-height: 1.5 !important;
+}
+.topic-stats .stat {
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* Level group label as a book Part heading */
+.level-label {
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid var(--color-border-subtle);
+  margin-bottom: 6px !important;
+}
+.level-name {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.22em !important;
+  color: var(--color-text-muted) !important;
+}
+.level-dot {
+  /* keep the colored level dot — it carries semantic info */
+}
+.level-count {
+  font-family: var(--font-mono) !important;
+}
+
+/* Chapter list — strip the outer card, become a TOC */
+.chapter-list {
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+.chapter-item {
+  border-bottom: 1px dotted var(--color-border) !important;
+  padding: 16px 0 !important;
+}
+.chapter-item:last-child {
+  border-bottom: none !important;
+}
+.chapter-item:hover {
+  background: transparent !important;
+}
+.chapter-item:hover .ch-name {
+  color: var(--color-accent) !important;
+}
+.chapter-item:hover .ch-num {
+  color: var(--color-text-primary) !important;
+}
+.chapter-item .ch-num {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  width: 32px !important;
+  letter-spacing: 0 !important;
+  transition: color 0.15s !important;
+  color: var(--color-text-muted) !important;
+}
+.chapter-item .ch-name {
+  font-family: var(--font-serif) !important;
+  font-size: 1.2rem !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.005em !important;
+  line-height: 1.25 !important;
+  transition: color 0.15s !important;
+}
+.chapter-item .ch-desc {
+  font-size: 0.875rem !important;
+  color: var(--color-text-muted) !important;
+  margin-top: 5px !important;
+  line-height: 1.55 !important;
+}
+.chapter-item .ch-time {
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  opacity: 1 !important;
+  color: var(--color-text-muted) !important;
+}
+.chapter-item .ch-arrow {
+  display: none !important;
 }
 
 /* ===================================
