@@ -856,19 +856,14 @@ body {
   color: var(--color-text-muted);
   text-decoration: none;
   padding: 5px 10px;
-  border-radius: 6px;
-  border-left: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition: color 0.15s;
   letter-spacing: -0.005em;
 }
 .page-toc-list a:hover {
   color: var(--color-text-primary);
-  background: var(--color-bg-hover);
 }
 .page-toc-list a.active {
   color: var(--color-accent);
-  border-left-color: var(--color-accent);
-  background: var(--color-accent-dim);
 }
 
 /* hide the chapter-complete badge on screens too narrow to fit */
