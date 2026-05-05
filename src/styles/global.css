@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- Refined dark palette (softer, more premium) --- */
-  --color-bg-primary: #0f1415;
-  --color-bg-secondary: #161c1d;
-  --color-bg-card: #1a2122;
-  --color-bg-code: #121819;
-  --color-bg-hover: #212a2b;
-  --color-bg-elevated: #232c2d;
-  --color-border: #27272a;
-  --color-border-subtle: #1f1f23;
+  /* --- Warm soft dark — paper-on-night (no pure black) --- */
+  --color-bg-primary: #11100f;
+  --color-bg-secondary: #181613;
+  --color-bg-card: #1d1a16;
+  --color-bg-code: #14120f;
+  --color-bg-hover: #221e19;
+  --color-bg-elevated: #26221c;
+  --color-border: #2c2820;
+  --color-border-subtle: #221e19;
   --color-border-active: #a3e635;
-  --color-text-primary: #fafafa;
-  --color-text-body: #d4d4d8;       /* long-form reading — used by .prose */
-  --color-text-secondary: #b9bcc1;  /* UI subtext, descriptions */
-  --color-text-muted: #71717a;      /* meta info, list markers */
+  --color-text-primary: #ece9e3;
+  --color-text-body: #d8d3ca;       /* long-form reading — warm cream */
+  --color-text-secondary: #b8b3aa;  /* UI subtext, descriptions */
+  --color-text-muted: #6e6962;      /* meta info, list markers */
   --color-accent: #a3e635;
   --color-accent-hover: #bef264;
   --color-accent-dim: #a3e63515;
@@ -33,6 +33,7 @@
   --color-cyan-dim: #22d3ee15;
   --font-mono: "Dank Mono", "Geist Mono", ui-monospace, monospace;
   --font-sans: "Cabin Condensed", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
 }
 
 /* ===================================
@@ -81,22 +82,27 @@ body {
 
 .prose h2 {
   color: var(--color-text-primary);
-  font-size: 1.5rem;
-  font-weight: 650;
+  font-family: var(--font-serif);
+  font-size: 1.875rem;
+  font-weight: 400;
   margin-top: 4.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.875rem;
   border-bottom: 1px solid var(--color-border-subtle);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
 }
 
 .prose h3 {
   color: var(--color-text-primary);
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 3rem;
-  margin-bottom: 1.125rem;
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.45rem;
+  font-weight: 400;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
 }
 
 .prose p {
@@ -781,6 +787,32 @@ body {
 .kbd-hint:hover { color: var(--color-text-primary); border-color: var(--color-text-muted); opacity: 1; }
 @media (min-width: 769px) {
   .kbd-hint { opacity: 0.55; pointer-events: auto; }
+}
+
+/* ===================================
+   Chapter title override (book feel)
+   =================================== */
+.ch-title {
+  font-family: var(--font-serif) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.012em !important;
+  line-height: 1.05 !important;
+}
+.ch-subtitle {
+  font-family: var(--font-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  font-size: 1.15rem !important;
+  color: var(--color-text-secondary) !important;
+  line-height: 1.5 !important;
+}
+
+/* Topic landing page titles */
+.topic-title {
+  font-family: var(--font-serif);
+  font-weight: 400 !important;
+  letter-spacing: -0.012em !important;
+  line-height: 1.05 !important;
 }
 
 /* ===================================
