@@ -608,6 +608,206 @@ body {
 }
 
 /* ===================================
+   Reading progress bar
+   =================================== */
+.read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-cyan));
+  z-index: 60;
+  transition: width 0.08s linear;
+  pointer-events: none;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent);
+}
+.read-progress.done {
+  background: linear-gradient(90deg, var(--color-green), var(--color-accent));
+  animation: progress-finish 1.2s ease-out;
+}
+@keyframes progress-finish {
+  0% { box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent); }
+  50% { box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 90%, transparent); }
+  100% { box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent); }
+}
+
+/* ===================================
+   Drop cap on first paragraph
+   =================================== */
+.prose > p:first-of-type::first-letter {
+  font-family: var(--font-sans);
+  font-size: 3.6rem;
+  font-weight: 700;
+  line-height: 0.9;
+  float: left;
+  margin: 0.3rem 0.6rem 0 0;
+  color: var(--color-accent);
+  letter-spacing: -0.04em;
+}
+
+/* slightly larger lede paragraph */
+.prose > p:first-of-type {
+  font-size: 1.125rem;
+  color: var(--color-text-primary);
+}
+
+/* ===================================
+   Heading anchor links
+   =================================== */
+.prose h2, .prose h3 { position: relative; scroll-margin-top: 80px; }
+.heading-anchor {
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  opacity: 0;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.85em;
+  transition: opacity 0.15s, color 0.15s;
+}
+.heading-anchor:hover { color: var(--color-accent); }
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor { opacity: 1; }
+.heading-anchor.copied::after {
+  content: " copied";
+  font-size: 0.75em;
+  color: var(--color-green);
+  margin-left: 4px;
+}
+
+/* ===================================
+   Keyboard help modal
+   =================================== */
+.kbd-help {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeInUp 0.2s ease;
+}
+.kbd-help[hidden] { display: none; }
+.kbd-help-card {
+  width: min(440px, 90vw);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.kbd-help-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.kbd-help-head h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.kbd-help-close {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.kbd-help-close:hover { color: var(--color-text-primary); background: var(--color-bg-hover); }
+.kbd-help-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.kbd-help-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+.kbd-help-list kbd {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  color: var(--color-text-primary);
+  padding: 2px 7px;
+  border-radius: 5px;
+  min-width: 22px;
+  text-align: center;
+}
+.kbd-help-foot {
+  margin: 1rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* shortcuts hint button (bottom right) */
+.kbd-hint {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s, color 0.15s, border-color 0.15s;
+  pointer-events: none;
+}
+.kbd-hint:hover { color: var(--color-text-primary); border-color: var(--color-text-muted); opacity: 1; }
+@media (min-width: 769px) {
+  .kbd-hint { opacity: 0.55; pointer-events: auto; }
+}
+
+/* ===================================
+   Chapter-complete hint above nav
+   =================================== */
+.ch-nav {
+  position: relative;
+}
+.ch-nav::before {
+  content: "✓ chapter complete · keep going";
+  position: absolute;
+  top: -2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--color-green);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--color-green-dim);
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-green) 30%, transparent);
+  white-space: nowrap;
+}
+
+/* ===================================
    Mobile
    =================================== */
 @media (max-width: 768px) {

@@ -29,6 +29,9 @@ const { title, showSidebar = true } = Astro.props;
     />
   </head>
   <body>
+    <!-- Reading progress bar -->
+    <div id="read-progress" class="read-progress" aria-hidden="true"></div>
+
     <!-- Header -->
     <header class="header">
       <div class="header-inner">
@@ -70,6 +73,32 @@ const { title, showSidebar = true } = Astro.props;
     </div>
 
     <Footer />
+
+    <!-- Keyboard shortcuts hint -->
+    <button id="kbd-hint" class="kbd-hint" aria-label="Show keyboard shortcuts">
+      <kbd style="font-family: var(--font-mono); font-size: 0.65rem; padding: 1px 5px; border: 1px solid var(--color-border); border-radius: 4px;">?</kbd>
+      shortcuts
+    </button>
+
+    <!-- Keyboard shortcuts help modal -->
+    <div id="kbd-help" class="kbd-help" role="dialog" aria-modal="true" aria-labelledby="kbd-help-title" hidden>
+      <div class="kbd-help-card">
+        <div class="kbd-help-head">
+          <h2 id="kbd-help-title">Keyboard shortcuts</h2>
+          <button class="kbd-help-close" aria-label="Close">✕</button>
+        </div>
+        <ul class="kbd-help-list">
+          <li><span><kbd>j</kbd> / <kbd>k</kbd></span><span>Scroll down / up</span></li>
+          <li><span><kbd>n</kbd> / <kbd>p</kbd></span><span>Next / previous chapter</span></li>
+          <li><span><kbd>g</kbd></span><span>Jump to top</span></li>
+          <li><span><kbd>G</kbd></span><span>Jump to bottom</span></li>
+          <li><span><kbd>m</kbd></span><span>Toggle chapter menu</span></li>
+          <li><span><kbd>?</kbd></span><span>Show this help</span></li>
+          <li><span><kbd>Esc</kbd></span><span>Close menus</span></li>
+        </ul>
+        <p class="kbd-help-foot">Shortcuts pause when typing in inputs.</p>
+      </div>
+    </div>
 
     <style>
       .header {
@@ -274,6 +303,94 @@ const { title, showSidebar = true } = Astro.props;
           btn.style.color = "";
           btn.style.borderColor = "";
         }, 2000);
+      });
+
+      // ===== Reading progress bar =====
+      const progress = document.getElementById("read-progress");
+      const article = document.querySelector("article.prose");
+      function updateProgress() {
+        if (!progress || !article) return;
+        const rect = (article as HTMLElement).getBoundingClientRect();
+        const top = window.scrollY + rect.top;
+        const total = (article as HTMLElement).offsetHeight - window.innerHeight;
+        const passed = Math.min(Math.max(window.scrollY - top, 0), Math.max(total, 1));
+        const pct = total > 0 ? (passed / total) * 100 : 0;
+        progress.style.width = pct + "%";
+        if (pct > 95) progress.classList.add("done");
+        else progress.classList.remove("done");
+      }
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+      updateProgress();
+
+      // ===== Anchor links on H2/H3 =====
+      function slugify(s: string) {
+        return s.toLowerCase().trim()
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+      }
+      document.querySelectorAll<HTMLElement>("article.prose h2, article.prose h3").forEach((h) => {
+        if (!h.id) h.id = slugify(h.textContent || "");
+        if (!h.id) return;
+        const a = document.createElement("a");
+        a.href = "#" + h.id;
+        a.className = "heading-anchor";
+        a.setAttribute("aria-label", "Link to this section");
+        a.textContent = "#";
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          const url = location.origin + location.pathname + "#" + h.id;
+          history.replaceState(null, "", "#" + h.id);
+          navigator.clipboard?.writeText(url).catch(() => {});
+          a.classList.add("copied");
+          setTimeout(() => a.classList.remove("copied"), 1200);
+        });
+        h.appendChild(a);
+      });
+
+      // ===== Keyboard shortcuts =====
+      const helpModal = document.getElementById("kbd-help");
+      function openHelp() { helpModal?.removeAttribute("hidden"); }
+      function closeHelp() { helpModal?.setAttribute("hidden", ""); }
+      helpModal?.querySelector(".kbd-help-close")?.addEventListener("click", closeHelp);
+      helpModal?.addEventListener("click", (e) => {
+        if (e.target === helpModal) closeHelp();
+      });
+      document.getElementById("kbd-hint")?.addEventListener("click", openHelp);
+
+      function isTyping() {
+        const el = document.activeElement;
+        if (!el) return false;
+        const tag = el.tagName;
+        return tag === "INPUT" || tag === "TEXTAREA" || (el as HTMLElement).isContentEditable;
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (isTyping()) return;
+
+        if (e.key === "Escape") {
+          closeHelp();
+          closeMenu();
+          return;
+        }
+        if (e.key === "?") { e.preventDefault(); openHelp(); return; }
+        if (e.key === "j") { window.scrollBy({ top: window.innerHeight * 0.4, behavior: "smooth" }); return; }
+        if (e.key === "k") { window.scrollBy({ top: -window.innerHeight * 0.4, behavior: "smooth" }); return; }
+        if (e.key === "g") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+        if (e.key === "G") { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); return; }
+        if (e.key === "m") { e.preventDefault(); const isOpen = sidebar?.classList.contains("translate-x-0"); if (isOpen) closeMenu(); else openMenu(); return; }
+        if (e.key === "n") {
+          const a = document.querySelector<HTMLAnchorElement>(".ch-nav-next");
+          if (a?.href) location.href = a.href;
+          return;
+        }
+        if (e.key === "p") {
+          const a = document.querySelector<HTMLAnchorElement>(".ch-nav-prev");
+          if (a?.href) location.href = a.href;
+          return;
+        }
       });
     </script>
   </body>
